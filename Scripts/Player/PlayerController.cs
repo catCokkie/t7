@@ -32,17 +32,19 @@ namespace SilentTestimony.Player
 		private GlobalEventBus _eventBus;
 		private Timer _noiseTimer;
 
-		public override void _Ready()
-		{
-			// 获取全局单例
-			_eventBus = GetNode<GlobalEventBus>("/root/GlobalEventBus");
-			
-			// 获取子节点
-			_noiseTimer = GetNode<Timer>("NoiseTimer");
-			
-			//// (重要!) 连接 C# 脚本中的方法到 Timer 的 "timeout" 信号
-			//_noiseTimer.Timeout += OnNoiseTimerTimeout;
-		}
+                public override void _Ready()
+                {
+                        // 获取全局单例
+                        _eventBus = GetNode<GlobalEventBus>("/root/GlobalEventBus");
+
+                        // 获取子节点
+                        _noiseTimer = GetNode<Timer>("NoiseTimer");
+
+                        InitializeInteractionPrompt();
+
+                        //// (重要!) 连接 C# 脚本中的方法到 Timer 的 "timeout" 信号
+                        //_noiseTimer.Timeout += OnNoiseTimerTimeout;
+                }
 
 		public override void _PhysicsProcess(double delta)
 		{

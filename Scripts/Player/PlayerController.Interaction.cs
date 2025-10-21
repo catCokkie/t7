@@ -10,6 +10,20 @@ namespace SilentTestimony.Player
         [ExportGroup("Interaction")]
         [Export(PropertyHint.Range, "8,256,1")] private float _interactRange = 64.0f;
         private readonly List<IInteractable> _nearbyInteractables = new();
+        private InteractionPrompt _interactionPrompt;
+
+        private void InitializeInteractionPrompt()
+        {
+            if (_interactionPrompt != null)
+                return;
+
+            var root = GetTree().Root;
+            _interactionPrompt = root?.GetNodeOrNull<InteractionPrompt>("Player/UIRoot/UI/InteractionPrompt");
+            if (_interactionPrompt == null)
+            {
+                GD.PushWarning("InteractionPrompt UI was not found under Player/UIRoot/UI.");
+            }
+        }
 
         public override void _UnhandledInput(InputEvent @event)
         {
@@ -64,18 +78,19 @@ namespace SilentTestimony.Player
 
         private void UpdatePrompt()
         {
-            var prompt = GetNodeOrNull<InteractionPrompt>("InteractionPrompt");
-            if (prompt == null)
+            InitializeInteractionPrompt();
+
+            if (_interactionPrompt == null)
                 return;
 
             var current = GetCurrentInteractTarget();
             if (current != null)
             {
-                prompt.ShowPrompt(current.GetInteractPrompt());
+                _interactionPrompt.ShowPrompt(current.GetInteractPrompt());
             }
             else
             {
-                prompt.HidePrompt();
+                _interactionPrompt.HidePrompt();
             }
         }
     }
