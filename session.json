@@ -1,0 +1,51 @@
+{
+  "project_root": ".",
+  "tasks_completed": [
+    "2.3 交互接口",
+    "2.4 交互检测器"
+  ],
+  "changes": [
+    {"path": "Scripts/Interfaces/IInteractable.cs", "action": "added"},
+    {"path": "Scripts/Player/PlayerController.Interaction.cs", "action": "added"},
+    {"path": "Scripts/World/TestNote.cs", "action": "modified"},
+    {"path": "Scenes/Props/TestNote.tscn", "action": "added_modified"},
+    {"path": "Scripts/UI/InteractionPrompt.cs", "action": "added"},
+    {"path": "Scenes/UI/InteractionPrompt.tscn", "action": "added"},
+    {"path": "Scenes/Actors/Player.tscn", "action": "modified"},
+    {"path": "project.godot", "action": "modified"}
+  ],
+  "input_actions": {
+    "interact": {"key": "E", "section": "[input]"},
+    "sneak": {"key": "Shift"},
+    "run": {"key": "Ctrl"}
+  },
+  "autoload": {
+    "GlobalEventBus": "res://Global/GlobalEventBus.cs",
+    "TimeManager": "res://Scripts/Core/TimeManager.cs",
+    "PlayerStats": "res://Scripts/Core/PlayerStats.cs"
+  },
+  "interaction_system": {
+    "interface": "IInteractable (Interact(Node2D), GetInteractPrompt())",
+    "detector": "Area2D Interactor on Player with CircleShape2D radius 64",
+    "selection": "Nearest interactable within range",
+    "prompt": "Scenes/UI/InteractionPrompt.tscn, auto-show/hide"
+  },
+  "test_object": {
+    "scene": "Scenes/Props/TestNote.tscn",
+    "script": "Scripts/World/TestNote.cs",
+    "group": "Interactable",
+    "prompt": "[E] 阅读笔记",
+    "on_interact": "Prints a log line"
+  },
+  "verify_steps": [
+    "Place Scenes/Props/TestNote.tscn near Player",
+    "Run game, approach note: prompt shows",
+    "Press E: console prints interaction log"
+  ],
+  "next_suggestions": [
+    "Optionally refresh prompt each physics frame for dynamic nearest switching",
+    "Add world-space prompt over target",
+    "Extend interactables for inventory/doors"
+  ]
+}
+

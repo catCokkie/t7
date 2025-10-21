@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://3ddufvb0r7gn"]
+
+[ext_resource type="Script" uid="uid://b8j1y11nrf1wt" path="res://Scripts/Player/PlayerController.cs" id="1_1p3rw"]
+[ext_resource type="Texture2D" uid="uid://drl1srhuynyua" path="res://icon.svg" id="1_jisj3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jisj3"]
+size = Vector2(132, 128)
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_1p3rw")
+
+[node name="Visuals" type="Sprite2D" parent="."]
+texture = ExtResource("1_jisj3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -1)
+shape = SubResource("RectangleShape2D_jisj3")
+
+[node name="NoiseTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="NoiseTimer" to="." method="OnNoiseTimerTimeout"]
+
+[node name="Interactor" type="Area2D" parent="."]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 64.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactor"]
+shape = SubResource("CircleShape2D_interact")
+
+[ext_resource type="PackedScene" path="res://Scenes/UI/InteractionPrompt.tscn" id="2_prompt"]
+
+[node name="InteractionPrompt" parent="." instance=ExtResource("2_prompt")] 
+
+[connection signal="body_entered" from="Interactor" to="." method="OnInteractorBodyEntered"]
+[connection signal="body_exited" from="Interactor" to="." method="OnInteractorBodyExited"]
