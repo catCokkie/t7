@@ -37,8 +37,10 @@ namespace SilentTestimony.Player
 			// 获取全局单例
 			_eventBus = GetNode<GlobalEventBus>("/root/GlobalEventBus");
 			
-			// 获取子节点
-			_noiseTimer = GetNode<Timer>("NoiseTimer");
+                        // 获取子节点
+                        _noiseTimer = GetNode<Timer>("NoiseTimer");
+
+                        InitializeInteractor();
 			
 			//// (重要!) 连接 C# 脚本中的方法到 Timer 的 "timeout" 信号
 			//_noiseTimer.Timeout += OnNoiseTimerTimeout;

@@ -25,7 +25,7 @@ shape = SubResource("RectangleShape2D_jisj3")
 [sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
 radius = 64.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactor"]
+[node name="InteractorShape" type="CollisionShape2D" parent="Interactor"]
 shape = SubResource("CircleShape2D_interact")
 
 [ext_resource type="PackedScene" path="res://Scenes/UI/InteractionPrompt.tscn" id="2_prompt"]
