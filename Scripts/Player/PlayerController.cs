@@ -12,6 +12,9 @@ namespace SilentTestimony.Player
 	/// </summary>
 	public partial class PlayerController : CharacterBody2D
 	{
+		partial void InitializeInteraction();
+		partial void UpdateInteraction(double delta);
+
 		// --- 玩家状态 ---
 		public enum PlayerState { Sneaking, Walking, Running }
 		public PlayerState CurrentState { get; private set; } = PlayerState.Walking;
@@ -46,17 +49,25 @@ namespace SilentTestimony.Player
 			//_noiseTimer.Timeout += OnNoiseTimerTimeout;
 		}
 
-		public override void _PhysicsProcess(double delta)
-		{
+                        InitializeInteraction();
+
+                        //// (重要!) 连接 C# 脚本中的方法到 Timer 的 "timeout" 信号
+                        //_noiseTimer.Timeout += OnNoiseTimerTimeout;
+                }
+
+                public override void _PhysicsProcess(double delta)
+                {
 			// 1. 处理输入并更新速度
 			HandleInputAndState();
 			
 			// 2. 执行物理移动
-			MoveAndSlide();
+                        MoveAndSlide();
 
-			// 3. 管理噪音计时器
-			UpdateNoiseTimer();
-		}
+                        // 3. 管理噪音计时器
+                        UpdateNoiseTimer();
+
+                        UpdateInteraction(delta);
+                }
 
 		/// <summary>
 		/// 1. 检查输入

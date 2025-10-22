@@ -34,7 +34,7 @@
     "scene": "Scenes/Props/TestNote.tscn",
     "script": "Scripts/World/TestNote.cs",
     "group": "Interactable",
-    "prompt": "[E] 阅读笔记",
+    "prompt": "按 [E] 阅读笔记",
     "on_interact": "Prints a log line"
   },
   "verify_steps": [
@@ -43,7 +43,7 @@
     "Press E: console prints interaction log"
   ],
   "next_suggestions": [
-    "Optionally refresh prompt each physics frame for dynamic nearest switching",
+    "Hook up interaction results to UI windows (notes, doors, etc.)",
     "Add world-space prompt over target",
     "Extend interactables for inventory/doors"
   ]
