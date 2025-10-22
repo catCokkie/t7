@@ -25,24 +25,29 @@ namespace SilentTestimony.Player
         }
 
         private readonly List<IInteractable> _nearbyInteractables = new();
-        private Area2D _interactorArea;
+        private Area2D _interactor;
         private CollisionShape2D _interactorShape;
-        private InteractionPrompt _interactionPrompt;
-        private IInteractable _currentInteractTarget;
 
-        partial void InitializeInteraction()
+        private void InitializeInteractor()
         {
-            _interactionPrompt = GetNodeOrNull<InteractionPrompt>("InteractionPrompt");
-            _interactorArea = GetNodeOrNull<Area2D>("Interactor");
-            _interactorShape = _interactorArea?.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+            _interactor = GetNodeOrNull<Area2D>("Interactor");
+            if (_interactor == null)
+            {
+                GD.PushWarning("PlayerController: Interactor node not found.");
+                return;
+            }
 
-            ApplyInteractRangeToShape();
-            RefreshInteractTarget(force: true);
-        }
+            _interactorShape = _interactor.GetNodeOrNull<CollisionShape2D>("InteractorShape")
+                ?? _interactor.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
 
-        partial void UpdateInteraction(double delta)
-        {
-            RefreshInteractTarget();
+            if (_interactorShape?.Shape is CircleShape2D circleShape)
+            {
+                circleShape.Radius = _interactRange;
+            }
+            else
+            {
+                GD.PushWarning("PlayerController: Interactor CollisionShape2D with CircleShape2D not found.");
+            }
         }
 
         public override void _UnhandledInput(InputEvent @event)
@@ -136,18 +141,14 @@ namespace SilentTestimony.Player
 
         private void RefreshInteractTarget(bool force = false)
         {
-            var target = GetCurrentInteractTarget();
-            if (!force && ReferenceEquals(target, _currentInteractTarget))
-                return;
-
-            _currentInteractTarget = target;
+            InitializeInteractionPrompt();
 
             if (_interactionPrompt == null)
                 return;
 
             if (_currentInteractTarget != null)
             {
-                _interactionPrompt.ShowPrompt(_currentInteractTarget.GetInteractPrompt());
+                _interactionPrompt.ShowPrompt(current.GetInteractPrompt());
             }
             else
             {

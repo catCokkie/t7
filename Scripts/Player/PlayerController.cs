@@ -43,6 +43,12 @@ namespace SilentTestimony.Player
                         // 获取子节点
                         _noiseTimer = GetNode<Timer>("NoiseTimer");
 
+                        InitializeInteractor();
+			
+			//// (重要!) 连接 C# 脚本中的方法到 Timer 的 "timeout" 信号
+			//_noiseTimer.Timeout += OnNoiseTimerTimeout;
+		}
+
                         InitializeInteraction();
 
                         //// (重要!) 连接 C# 脚本中的方法到 Timer 的 "timeout" 信号
