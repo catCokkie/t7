@@ -66,14 +66,14 @@
 
 ## 🧠 Phase 3：AI 与环境 (AI & World)
 
-- [ ] **EnemyAI.tscn**
+- [x] **EnemyAI.tscn**
   - 基础 `CharacterBody2D` + `EnemyAIController.cs`
-- [ ] 实现视觉系统
+- [x] 实现视觉系统
   - 添加 `Area2D`（扇形视野）与 `RayCast2D`
   - 视野内检测玩家是否被墙遮挡
-- [ ] 实现状态机 FSM
+- [x] 实现状态机 FSM
   - `Patrolling`, `Alerted`, `Chasing`
-- [ ] 导航寻路
+- [x] 导航寻路
   - 使用 `NavigationServer2D.GetPath()`
 - [ ] 场景管理
   - 创建 `SceneLoader.cs`
