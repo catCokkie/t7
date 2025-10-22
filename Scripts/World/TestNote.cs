@@ -7,7 +7,7 @@ namespace SilentTestimony.World
     {
         public string GetInteractPrompt()
         {
-            return "[E] 阅读笔记";
+            return "按 [E] 阅读笔记";
         }
 
         public void Interact(Node2D interactor)

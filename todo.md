@@ -45,35 +45,39 @@
   - 枚举 `PlayerState { Walking, Sneaking }`  
   - 潜行时速度降低
 
-### 🧩 2.3 交互接口 (已完成)
-- [x] 创建 `Scripts/Interfaces/IInteractable.cs`
-  - `void Interact(Node2D interactor)`
-  - `string GetInteractPrompt()`
-- [x] 在 `PlayerController` 中集成交互检测逻辑
-  - 添加列表 `_nearbyInteractables`
+### 🧩 2.3 交互接口 (当前进行)
+- [x] 创建 `Scripts/Interfaces/IInteractable.cs`  
+  - `void Interact(Node2D interactor)`  
+  - `string GetInteractPrompt()`  
+- [x] 在 `PlayerController` 中集成交互检测逻辑  
+  - 添加列表 `_nearbyInteractables`  
   - 检测输入 `InputEvent` → 调用 `Interact()`
-- [x] 创建示例对象 `TestNote.tscn` 实现接口
+- [x] 创建示例对象 `TestNote.tscn` 实现接口  
   - 测试输出 `"按 [E] 阅读笔记"`
 
-### 🧭 2.4 交互检测器 (已完成)
-- [x] 在 `Player.tscn` 添加 `Area2D` 命名为 `Interactor`
-- [x] 添加检测范围 `CollisionShape2D`
-- [x] 在 `PlayerController` 绑定 `body_entered` / `body_exited` 信号
-- [x] 实现距离最近优先的交互逻辑
+### 🧭 2.4 交互检测器 (下一步)
+- [x] 在 `Player.tscn` 添加 `Area2D` 命名为 `Interactor`  
+- [x] 添加检测范围 `CollisionShape2D`  
+- [x] 在 `PlayerController` 绑定 `body_entered` / `body_exited` 信号  
+- [x] 实现距离最近优先的交互逻辑  
 - [x] 添加 UI 提示组件（InteractionPrompt）
+
+> **当前实现要点：** 接口定义统一调用入口，交互器根据最近目标判定触发 `Interact()`，并驱动 UI 提示在范围内实时更新。  
+
+- [ ] 优化交互提示刷新策略（例如按需更新或更智能的提示优先级）。  
 
 ---
 
 ## 🧠 Phase 3：AI 与环境 (AI & World)
 
-- [ ] **EnemyAI.tscn**
+- [x] **EnemyAI.tscn**
   - 基础 `CharacterBody2D` + `EnemyAIController.cs`
-- [ ] 实现视觉系统
+- [x] 实现视觉系统
   - 添加 `Area2D`（扇形视野）与 `RayCast2D`
   - 视野内检测玩家是否被墙遮挡
-- [ ] 实现状态机 FSM
+- [x] 实现状态机 FSM
   - `Patrolling`, `Alerted`, `Chasing`
-- [ ] 导航寻路
+- [x] 导航寻路
   - 使用 `NavigationServer2D.GetPath()`
 - [ ] 场景管理
   - 创建 `SceneLoader.cs`
