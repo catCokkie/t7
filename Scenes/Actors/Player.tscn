@@ -30,7 +30,15 @@ shape = SubResource("CircleShape2D_interact")
 
 [ext_resource type="PackedScene" path="res://Scenes/UI/InteractionPrompt.tscn" id="2_prompt"]
 
-[node name="InteractionPrompt" parent="." instance=ExtResource("2_prompt")] 
+[node name="UIRoot" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UIRoot"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InteractionPrompt" parent="UIRoot/UI" instance=ExtResource("2_prompt")]
 
 [connection signal="body_entered" from="Interactor" to="." method="OnInteractorBodyEntered"]
 [connection signal="body_exited" from="Interactor" to="." method="OnInteractorBodyExited"]

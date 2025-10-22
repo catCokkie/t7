@@ -88,18 +88,19 @@ namespace SilentTestimony.Player
 
         private void UpdatePrompt()
         {
-            var prompt = GetNodeOrNull<InteractionPrompt>("InteractionPrompt");
-            if (prompt == null)
+            InitializeInteractionPrompt();
+
+            if (_interactionPrompt == null)
                 return;
 
             var current = GetCurrentInteractTarget();
             if (current != null)
             {
-                prompt.ShowPrompt(current.GetInteractPrompt());
+                _interactionPrompt.ShowPrompt(current.GetInteractPrompt());
             }
             else
             {
-                prompt.HidePrompt();
+                _interactionPrompt.HidePrompt();
             }
         }
     }
