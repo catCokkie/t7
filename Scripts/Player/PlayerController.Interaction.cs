@@ -10,18 +10,28 @@ namespace SilentTestimony.Player
         [ExportGroup("Interaction")]
         [Export(PropertyHint.Range, "8,256,1")] private float _interactRange = 64.0f;
         private readonly List<IInteractable> _nearbyInteractables = new();
-        private InteractionPrompt _interactionPrompt;
+        private Area2D _interactor;
+        private CollisionShape2D _interactorShape;
 
-        private void InitializeInteractionPrompt()
+        private void InitializeInteractor()
         {
-            if (_interactionPrompt != null)
-                return;
-
-            var root = GetTree().Root;
-            _interactionPrompt = root?.GetNodeOrNull<InteractionPrompt>("Player/UIRoot/UI/InteractionPrompt");
-            if (_interactionPrompt == null)
+            _interactor = GetNodeOrNull<Area2D>("Interactor");
+            if (_interactor == null)
             {
-                GD.PushWarning("InteractionPrompt UI was not found under Player/UIRoot/UI.");
+                GD.PushWarning("PlayerController: Interactor node not found.");
+                return;
+            }
+
+            _interactorShape = _interactor.GetNodeOrNull<CollisionShape2D>("InteractorShape")
+                ?? _interactor.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+
+            if (_interactorShape?.Shape is CircleShape2D circleShape)
+            {
+                circleShape.Radius = _interactRange;
+            }
+            else
+            {
+                GD.PushWarning("PlayerController: Interactor CollisionShape2D with CircleShape2D not found.");
             }
         }
 
