@@ -1,44 +1,51 @@
-[gd_scene load_steps=6 format=3 uid="uid://e8p1h7m0y4sjh"]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource type="Script" uid="uid://d1r3p7tm3h4v7" path="res://Scripts/AI/EnemyAIController.cs" id="1_4b6lq"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="1_icon"]
+[ext_resource type="Script" path="res://Scripts/AI/EnemyAIController.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_texture"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(64, 96)
+[sub_resource type="RectangleShape2D" id="1_body_shape"]
+size = Vector2(28, 28)
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_fov"]
-points = PackedVector2Array(0, 0, 220, -120, 220, 120)
+[sub_resource type="CircleShape2D" id="2_vision_shape"]
+radius = 160.0
 
 [node name="EnemyAI" type="CharacterBody2D" groups=["Enemy"]]
-script = ExtResource("1_4b6lq")
+script = ExtResource("1_script")
+input_pickable = true
+patrol_container_path = NodePath("PatrolPoints")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_icon")
-scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_texture")
+scale = Vector2(0.18, 0.18)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_body")
+shape = SubResource("1_body_shape")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 4.0
-path_max_distance = 1200.0
-avoidance_enabled = false
+target_desired_distance = 4.0
 
 [node name="VisionArea" type="Area2D" parent="."]
-collision_layer = 0
+monitoring = true
+monitorable = true
+collision_layer = 2
 collision_mask = 1
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
-shape = SubResource("ConvexPolygonShape2D_fov")
+shape = SubResource("2_vision_shape")
 
-[node name="VisionRay" type="RayCast2D" parent="."]
-target_position = Vector2(200, 0)
-collision_mask = 3
+[node name="LineOfSight" type="RayCast2D" parent="."]
+enabled = true
+target_position = Vector2(160, 0)
+collision_mask = 1
 
-[node name="AlertTimer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
+[node name="PatrolPoints" type="Node2D" parent="."]
+
+[node name="PointA" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(-64, 0)
+
+[node name="PointB" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(64, 0)
 
 [connection signal="body_entered" from="VisionArea" to="." method="OnVisionBodyEntered"]
 [connection signal="body_exited" from="VisionArea" to="." method="OnVisionBodyExited"]
