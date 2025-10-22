@@ -87,13 +87,13 @@
 
 ## 🔐 Phase 4：物品与解谜 (Inventory & Puzzles)
 
-- [ ] **InventoryItemData.cs**
+- [x] **InventoryItemData.cs**
   - 定义：`ItemID`, `Name`, `Description`, `Icon`, `IsKeyItem`
-- [ ] **InventoryManager.cs**
-  - 列表存储物品  
-  - `AddItem()`, `HasItem()`  
+- [x] **InventoryManager.cs**
+  - 列表存储物品
+  - `AddItem()`, `HasItem()`
   - 发出信号：`InventoryChanged`
-- [ ] **LockedDoor.tscn**
+- [x] **LockedDoor.tscn**
   - 实现 `IInteractable`
   - 检查 `InventoryManager.HasItem(RequiredKeyItemID)`
   - 若匹配则开门
