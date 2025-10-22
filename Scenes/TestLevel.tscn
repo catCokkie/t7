@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Actors/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/ItemPickup.tscn" id="2_item"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/NotePickup.tscn" id="3_note"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/LockedDoor.tscn" id="4_door"]
+[ext_resource type="Resource" path="res://Resources/Items/TestKey.tres" id="5_key"]
+[ext_resource type="Resource" path="res://Resources/Evidence/TestNoteEvidence.tres" id="6_evidence"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/SceneDoor.tscn" id="7_scene_door"]
+
+[sub_resource type="RectangleShape2D" id="GroundShape"]
+size = Vector2(800, 24)
+
+[node name="TestLevel" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(0, 0)
+
+[node name="PickupKey" parent="." instance=ExtResource("2_item")]
+position = Vector2(120, 0)
+Item = ExtResource("5_key")
+
+[node name="Note1" parent="." instance=ExtResource("3_note")]
+position = Vector2(-140, 0)
+Title = "初始笔记"
+Content = "欢迎来到 Demo。靠近按 E 拾取/阅读；按 I 打开背包。"
+Evidence = ExtResource("6_evidence")
+
+[node name="LockedDoorTest" parent="." instance=ExtResource("4_door")]
+position = Vector2(260, 0)
+RequiredKeyItemID = "key_lab"
+
+[node name="Spawn_FromLevel2" type="Node2D" parent="."]
+position = Vector2(160, 0)
+
+[node name="Door_ToLevel2" parent="." instance=ExtResource("7_scene_door")]
+position = Vector2(340, 0)
+TargetScenePath = "res://Scenes/Level2.tscn"
+TargetSpawnPointName = "Spawn_FromLevel1"
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(0, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("GroundShape")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+color = Color(0.2, 0.22, 0.25, 1)
+polygon = PackedVector2Array(-400, -12, 400, -12, 400, 12, -400, 12)

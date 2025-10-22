@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/World/SceneDoor.cs" id="1_scr"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="1_tex"]
+
+[sub_resource type="RectangleShape2D" id="1_shape"]
+size = Vector2(32, 48)
+
+[node name="SceneDoor" type="StaticBody2D" groups=["Interactable"]]
+script = ExtResource("1_scr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tex")
+scale = Vector2(0.2, 0.3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_shape")
+

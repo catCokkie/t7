@@ -1,14 +1,14 @@
-# 🧭 Silent Testimony — 全阶段 To-Do 列表（Demo 版）
+# 🧭 Silent Testimony 全阶段 To-Do 列表（Demo 版）
 
-> **目标：**  
+> 目标：
 > 构建一个以“时间循环 + 解谜探索 + 叙事”为核心的 2D AVG 游戏 Demo  
-> 使用 **Godot 4.x + C#（Mono）**
+> 使用 Godot 4.x + C#（Mono）
 
 ---
 
-## ✅ Phase 0：项目初始化与核心架构 (Project Setup)
+## Phase 0：项目初始化与核心架构 (Project Setup)
 
-- [x] 创建新的 **Godot 4.x (Mono)** 项目  
+- [x] 创建新的 Godot 4.x (Mono) 项目  
 - [x] 建立核心目录结构  
   - `Scenes/`, `Scripts/`, `Assets/`, `Resources/`, `UI/`  
 - [x] 确认 `.sln` 已生成  
@@ -18,173 +18,147 @@
 
 ---
 
-## ⚙️ Phase 1：核心机制 – 时间与玩家状态 (Time & Player Vitals)
+## Phase 1：核心机制——时间与玩家状态 (Time & Player Vitals)
 
-- [x] **TimeManager.cs**
-  - 全局单例注册
-  - 实现时间流逝 (`_Process(delta)`)
-  - 发出信号：`HourChanged`, `DayChanged`
-- [x] **PlayerStats.cs**
-  - 全局单例注册
-  - 定义属性：`Health`, `Sanity`
-  - 创建 `ChangeHealth()` / `ChangeSanity()`
-  - 发出信号：`HealthChanged`, `SanityChanged`
+- [x] TimeManager.cs（Autoload）  
+  - 实现时间流逝 `_Process(delta)`，信号：`HourChanged`, `DayChanged`
+- [x] PlayerStats.cs（Autoload）  
+  - 属性：`Health`, `Sanity`；方法：`ChangeHealth()` / `ChangeSanity()`；信号：`HealthChanged`, `SanityChanged`
 
 ---
 
-## 🧍 Phase 2：玩家与交互 (Player & Interaction)
+## Phase 2：玩家与交互 (Player & Interaction)
 
-### 🎮 2.1 玩家场景
-- [x] 创建 `Player.tscn`（根节点 `CharacterBody2D`）
-- [x] 添加 `CollisionShape2D` 与 `Sprite2D`  
-- [x] 添加脚本 `PlayerController.cs`
+### 2.1 玩家场景
+- [x] `Player.tscn`（根节点 `CharacterBody2D`）
+- [x] 添加 `CollisionShape2D` 与 `Sprite2D`
+- [x] 脚本 `PlayerController.cs`
 
-### 🕹 2.2 玩家控制器
-- [x] 实现 `_PhysicsProcess()` 八方向移动
-- [x] 添加潜行状态机  
-  - 枚举 `PlayerState { Walking, Sneaking }`  
-  - 潜行时速度降低
+### 2.2 玩家控制器
+- [x] `_PhysicsProcess()` 八方向移动
+- [x] 潜行/行走/奔跑状态机（噪音计时器事件）
 
-### 🧩 2.3 交互接口 (当前进行)
-- [x] 创建 `Scripts/Interfaces/IInteractable.cs`  
-  - `void Interact(Node2D interactor)`  
-  - `string GetInteractPrompt()`  
-- [x] 在 `PlayerController` 中集成交互检测逻辑  
-  - 添加列表 `_nearbyInteractables`  
-  - 检测输入 `InputEvent` → 调用 `Interact()`
-- [x] 创建示例对象 `TestNote.tscn` 实现接口  
-  - 测试输出 `"按 [E] 阅读笔记"`
+### 2.3 交互接口
+- [x] `Scripts/Interfaces/IInteractable.cs`（`Interact(Node2D)`, `GetInteractPrompt()`）
+- [x] `PlayerController` 集成交互检测与输入调用
+- [x] 示例对象 `TestNote.tscn`（现已接入笔记阅读 UI）
 
-### 🧭 2.4 交互检测器 (下一步)
-- [x] 在 `Player.tscn` 添加 `Area2D` 命名为 `Interactor`  
-- [x] 添加检测范围 `CollisionShape2D`  
-- [x] 在 `PlayerController` 绑定 `body_entered` / `body_exited` 信号  
-- [x] 实现距离最近优先的交互逻辑  
-- [x] 添加 UI 提示组件（InteractionPrompt）
+### 2.4 交互检测器
+- [x] 在 `Player.tscn` 添加 `Area2D` Interactor + `CollisionShape2D`
+- [x] 连接 `body_entered` / `body_exited`
+- [x] 最近目标优先选择逻辑
+- [x] UI 提示（`InteractionPrompt`）+ 刷新修复
 
-> **当前实现要点：** 接口定义统一调用入口，交互器根据最近目标判定触发 `Interact()`，并驱动 UI 提示在范围内实时更新。  
-
-- [ ] 优化交互提示刷新策略（例如按需更新或更智能的提示优先级）。  
+> 待优化：交互提示刷新策略（按需更新/更智能的优先级）
 
 ---
 
-## 🧠 Phase 3：AI 与环境 (AI & World)
+## Phase 3：AI 与环境 (AI & World)
 
-- [x] **EnemyAI.tscn**
-  - 基础 `CharacterBody2D` + `EnemyAIController.cs`
-- [x] 实现视觉系统
-  - 添加 `Area2D`（扇形视野）与 `RayCast2D`
-  - 视野内检测玩家是否被墙遮挡
-- [x] 实现状态机 FSM
-  - `Patrolling`, `Alerted`, `Chasing`
-- [x] 导航寻路
-  - 使用 `NavigationServer2D.GetPath()`
-- [ ] 场景管理
-  - 创建 `SceneLoader.cs`
-  - 创建可交互门 `Door.tscn`（调用 `ChangeScene()`）
+- [x] 敌人场景 `EnemyAI.tscn` + `EnemyAIController.cs`
+- [x] 视觉系统（`Area2D` 扇形视野 + `RayCast2D` 视线遮挡）
+- [x] 状态机 FSM：`Patrolling`, `Alerted`, `Chasing`
+- [x] 导航寻路（`NavigationServer2D`）
+- [x] 场景管理（`SceneLoader.cs`，交互门切换场景）
+  - Autoload: `SceneLoader`
+  - `SceneDoor.tscn` + `SceneDoor.cs`（与出生点名 `TargetSpawnPointName`）
+  - 示例：`TestLevel.tscn` ⇄ `Level2.tscn`
 
 ---
 
-## 🔐 Phase 4：物品与解谜 (Inventory & Puzzles)
+## Phase 4：物品与解谜 (Inventory & Puzzles)
 
-- [x] **InventoryItemData.cs**
-  - 定义：`ItemID`, `Name`, `Description`, `Icon`, `IsKeyItem`
-- [x] **InventoryManager.cs**
-  - 列表存储物品
-  - `AddItem()`, `HasItem()`
-  - 发出信号：`InventoryChanged`
-- [x] **LockedDoor.tscn**
-  - 实现 `IInteractable`
-  - 检查 `InventoryManager.HasItem(RequiredKeyItemID)`
-  - 若匹配则开门
+- [x] `InventoryItemData.cs`（`ItemID`, `Name`, `Description`, `Icon`, `IsKeyItem`）
+- [x] `InventoryManager.cs`（Autoload；`AddItem()`, `HasItem()`, `InventoryChanged`）
+- [x] `LockedDoor.tscn` + `LockedDoor.cs`（检查 `HasItem(RequiredKeyItemID)`）
+- [x] 物品拾取（Pickup）
+  - `Scripts/World/ItemPickup.cs` + `Scenes/Props/ItemPickup.tscn`
+  - 示例物品资源：`Resources/Items/TestKey.tres`
+- [x] 上锁门验证（与钥匙联动）
+  - `RequiredKeyItemID=key_lab` 测试通过
 
 ---
 
-## 📜 Phase 5：叙事系统 (Narrative Systems)
+## Phase 5：叙事系统 (Narrative Systems)
 
-- [ ] **EvidenceData.cs**
-  - 定义：`EvidenceID`, `Title`, `Content`
-- [ ] **EvidenceManager.cs**
-  - 管理收集的证据
-- [ ] **EvidenceBoard.tscn**
-  - 通过 `GridContainer` 或 `GraphEdit` 展示证据关系
-
----
-
-## 💫 Phase 6：反馈系统 (Feedback Systems)
-
-- [ ] **AudioManager.cs**
-  - `PlaySFX(AudioStream sfx, Vector2 pos)`  
-  - `PlayHeartbeat(float intensity)`
-- [ ] **PostProcessController.cs**
-  - 动态调整理智Shader参数（暗角、噪点）
-- [ ] 创建 Shader 文件：
-  - `vignette.gdshader`
-  - `noise.gdshader`
+- [x] 笔记阅读 UI（NoteReader）
+  - `Scenes/UI/NoteReader.tscn` + `Scripts/UI/NoteReader.cs`
+  - `Scripts/UI/NoteReaderManager.cs`（Autoload）
+  - `Scripts/World/NotePickup.cs` + `Scenes/Props/NotePickup.tscn`
+- [x] EvidenceData.cs（`EvidenceID`, `Title`, `Content`）
+- [x] EvidenceManager.cs（Autoload，管理收集的证据）
+- [x] EvidenceBoard.tscn + EvidenceBoard UI（`ItemList` 左侧列表，右侧详情）
+- [x] EvidenceBoardManager.cs（Autoload，按 `O` 打开/关闭）
+- [x] NotePickup 可选绑定 EvidenceData，阅读时自动登记证据
+- [x] 示例证据资源：`Resources/Evidence/TestNoteEvidence.tres`
 
 ---
 
-## ⚙️ Phase 7：系统功能 (System Features)
+## Phase 6：反馈系统 (Feedback Systems)
 
-- [ ] **SettingsMenu.tscn**
-  - 音量滑条、分辨率、窗口模式
-  - 保存配置至 `user://config.json`
-- [ ] **SaveManager.cs**
-  - 结构化 JSON 存档（位置、场景、生命、理智、物品）
-- [ ] **PauseMenu.tscn**
-  - 暂停、继续、设置、退出选项
+- [x] AudioManager（脚步/交互 SFX、心跳）（Autoload）
+- [x] PostProcessController（Sanity Shader：暗角/噪点）（Autoload）
+- [x] Shaders：`shaders/vignette.gdshader`, `shaders/noise.gdshader`
+- [x] 心跳与理智联动（在 PostProcessController 内映射 Sanity→Heartbeat 强度）
+- [x] 玩家脚步音效（按走/跑分别配置，随计时器触发）
 
 ---
 
-## 🎬 Phase 8：Demo 展示与打磨 (Demo Polish)
+## Phase 7：系统功能 (System Features)
 
-- [ ] 主菜单 (`MainMenu.tscn`)  
-  - 开始游戏 / 继续 / 退出
-- [ ] Demo 关卡场景展示核心机制  
-  - 时间变化 / 解谜 / AI 追踪 / Sanity 效果
-- [ ] 调试工具 `DebugOverlay.tscn`  
-  - FPS、AI 状态、时间、TimeScale
-- [ ] 整合存档系统 + 设置  
-- [ ] 优化音效、光影、Shader 效果  
-- [ ] 添加 3 分钟完整可玩循环（时间 → 解谜 → 追逐 → 重置）
-
----
-
-## 🧩 附录：工程规范与优化建议
-
-- [ ] **统一命名空间**  
-  `SilentTestimony.Systems`, `SilentTestimony.Player`, `SilentTestimony.UI`
-- [ ] **脚本模块划分**
-  ```
-  Scripts/
-   ├─ Core/
-   ├─ Systems/
-   ├─ Player/
-   ├─ AI/
-   ├─ UI/
-   ├─ Interfaces/
-   └─ Data/
-  ```
-- [ ] **调试功能**
-  - `F1` 显示调试界面  
-  - `F5` 重载场景  
-  - 显示 FPS、内存、AI 数量  
-- [ ] **时间系统调试**  
-  - 使用 `Engine.time_scale` 控制游戏速度  
-- [ ] **版本控制友好性**  
-  - 数据文件采用 `.json` + `.tres` 混合方式  
-  - 使用 `.gdignore` 避免冲突  
-- [ ] **后续扩展**  
-  - 加入对话系统 (`DialogueManager`)  
-  - 加入事件驱动剧情（基于 Evidence / Time）
+- [x] Inventory UI 覆盖层（按 `I` 打开）
+  - `Scenes/UI/InventoryUI.tscn` + `Scripts/UI/InventoryUI.cs`
+  - `Scripts/UI/InventoryUIManager.cs`（Autoload）
+- [x] Settings（音量/分辨率/窗口模式，存 `user://config.json`）
+  - `Scripts/Systems/SettingsManager.cs`（Autoload）
+  - `Scenes/UI/SettingsMenu.tscn` + `Scripts/UI/SettingsMenu.cs`
+- [x] SaveManager（JSON 存档：位置/场景/生命/理智/物品/证据）
+  - `Scripts/Systems/SaveManager.cs`（Autoload）
+- [x] PauseMenu（暂停/继续/设置/保存/退出，Esc 打开）
+  - `Scenes/UI/PauseMenu.tscn` + `Scripts/UI/PauseMenu.cs`
+  - `Scripts/UI/PauseMenuManager.cs`（Autoload）
 
 ---
 
-## 📅 开发周期建议（约 6 周）
+## Phase 8：Demo 展示与打磨 (Demo Polish)
+
+- [x] 测试关卡 `Scenes/TestLevel.tscn`（最小可交互 Demo）
+  - Player、钥匙拾取、上锁门、笔记、简易地面
+- [ ] 主菜单 `MainMenu.tscn`（开始/继续/退出）
+- [ ] Demo 场景展示核心机制（时间/解谜/AI 追踪/Sanity 效果）
+- [x] 调试工具 `DebugOverlay.tscn`（FPS、时间、背包/Evidence 数量、AI 数量、TimeScale 控制；F1 显示/隐藏；F5/F9 快存快读）
+- [ ] 整合存档系统 + 设置
+- [ ] 优化音效、光影、Shader 效果
+- [ ] 添加 3 分钟完整可玩循环（时间 + 解谜 + 追逐 + 重置）
+
+---
+
+## 附录：工程规范与优化建议
+
+- [ ] 统一命名空间：`SilentTestimony.Systems`, `SilentTestimony.Player`, `SilentTestimony.UI`
+- [ ] 脚本模块划分
+```
+Scripts/
+ ├─ Core/
+ ├─ Systems/
+ ├─ Player/
+ ├─ AI/
+ ├─ UI/
+ ├─ Interfaces/
+ └─ Data/
+```
+- [ ] 调试功能：`F1` 调试界面、`F5` 重载场景、显示 FPS/内存/AI 数量
+- [ ] 时间系统调试：`Engine.time_scale` 控制速度
+- [ ] 版本控制友好：数据 `.json` + `.tres`，使用 `.gdignore`
+- [ ] 后续扩展：对话系统 (`DialogueManager`)、基于 Evidence/Time 的事件驱动剧情
+
+---
+
+## 开发周期建议（≈ 6 周）
 
 | 周次 | 阶段 | 目标 |
 |------|------|------|
-| 第 1–2 周 | Phase 3–4 | AI + 解谜系统 |
+| 第 1–2 周 | Phase 3 | AI + 解谜系统 |
 | 第 3 周 | Phase 5 | 叙事系统基础 |
 | 第 4 周 | Phase 6–7 | 音频 / 存档 / 设置 |
-| 第 5–6 周 | Phase 8 | 整合打磨，形成 Demo 展示版 |
+| 第 5–6 周 | Phase 8 | 整合打磨，形成 Demo 展示 |

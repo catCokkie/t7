@@ -1,0 +1,10 @@
+[gd_resource type="EvidenceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Data/EvidenceData.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+EvidenceID = "ev_first_note"
+Title = "第一份笔记"
+Content = "这是一份示例证据。" 
+

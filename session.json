@@ -2,50 +2,119 @@
   "project_root": ".",
   "tasks_completed": [
     "2.3 交互接口",
-    "2.4 交互检测器"
+    "2.4 交互检测器",
+    "物品拾取（ItemPickup + TestKey）",
+    "笔记阅读 UI（NoteReader + NotePickup）",
+    "Inventory 覆盖层（I 键）",
+    "上锁门与钥匙验证（key_lab）",
+    "测试关卡与简易地面",
+    "叙事系统：Evidence（数据/管理/看板/UI 切换）",
+    "场景管理：SceneLoader + 场景门（Level1 ⇄ Level2）",
+    "系统功能：Settings/Save/Pause 完成",
+    "调试工具：DebugOverlay（F1/F5/F9）",
+    "反馈系统：AudioManager + PostProcess + Shaders",
+    "反馈系统：心跳-理智联动 + 脚步SFX"
   ],
   "changes": [
+    {"path": "Scripts/Player/PlayerController.cs", "action": "modified"},
+    {"path": "Scripts/Player/PlayerController.Interaction.cs", "action": "modified"},
     {"path": "Scripts/Interfaces/IInteractable.cs", "action": "added"},
-    {"path": "Scripts/Player/PlayerController.Interaction.cs", "action": "added"},
-    {"path": "Scripts/World/TestNote.cs", "action": "modified"},
-    {"path": "Scenes/Props/TestNote.tscn", "action": "added_modified"},
     {"path": "Scripts/UI/InteractionPrompt.cs", "action": "added"},
     {"path": "Scenes/UI/InteractionPrompt.tscn", "action": "added"},
+
+    {"path": "Scripts/UI/NoteReader.cs", "action": "added"},
+    {"path": "Scripts/UI/NoteReaderManager.cs", "action": "added"},
+    {"path": "Scenes/UI/NoteReader.tscn", "action": "added"},
+
+    {"path": "Scripts/UI/InventoryUI.cs", "action": "added"},
+    {"path": "Scripts/UI/InventoryUIManager.cs", "action": "added"},
+    {"path": "Scenes/UI/InventoryUI.tscn", "action": "added"},
+    {"path": "Scripts/Data/EvidenceData.cs", "action": "added"},
+    {"path": "Scripts/Systems/EvidenceManager.cs", "action": "added"},
+    {"path": "Scripts/UI/EvidenceBoard.cs", "action": "added"},
+    {"path": "Scripts/UI/EvidenceBoardManager.cs", "action": "added"},
+    {"path": "Scenes/UI/EvidenceBoard.tscn", "action": "added"},
+    {"path": "Resources/Evidence/TestNoteEvidence.tres", "action": "added"},
+
+    {"path": "Scripts/World/ItemPickup.cs", "action": "added"},
+    {"path": "Scenes/Props/ItemPickup.tscn", "action": "added"},
+    {"path": "Resources/Items/TestKey.tres", "action": "added"},
+
+    {"path": "Scripts/World/NotePickup.cs", "action": "added"},
+    {"path": "Scripts/World/TestNote.cs", "action": "modified"},
+    {"path": "Scenes/Props/NotePickup.tscn", "action": "added"},
+
+    {"path": "Scripts/World/LockedDoor.cs", "action": "modified"},
+    {"path": "Scenes/Props/LockedDoor.tscn", "action": "modified"},
+
     {"path": "Scenes/Actors/Player.tscn", "action": "modified"},
+    {"path": "Scenes/TestLevel.tscn", "action": "added"},
     {"path": "project.godot", "action": "modified"}
   ],
   "input_actions": {
     "interact": {"key": "E", "section": "[input]"},
     "sneak": {"key": "Shift"},
-    "run": {"key": "Ctrl"}
+    "run": {"key": "Ctrl"},
+    "inventory": {"key": "I"},
+    "evidence": {"key": "O"},
+    "pause": {"key": "Esc"},
+    "debug_toggle": {"key": "F1"},
+    "quick_save": {"key": "F5"},
+    "quick_load": {"key": "F9"}
   },
   "autoload": {
     "GlobalEventBus": "res://Global/GlobalEventBus.cs",
     "TimeManager": "res://Scripts/Core/TimeManager.cs",
-    "PlayerStats": "res://Scripts/Core/PlayerStats.cs"
+    "PlayerStats": "res://Scripts/Core/PlayerStats.cs",
+    "InventoryManager": "res://Scripts/Systems/InventoryManager.cs",
+    "NoteReaderManager": "res://Scripts/UI/NoteReaderManager.cs",
+    "InventoryUIManager": "res://Scripts/UI/InventoryUIManager.cs",
+    "EvidenceManager": "res://Scripts/Systems/EvidenceManager.cs",
+    "EvidenceBoardManager": "res://Scripts/UI/EvidenceBoardManager.cs",
+    "SceneLoader": "res://Scripts/Systems/SceneLoader.cs",
+    "SettingsManager": "res://Scripts/Systems/SettingsManager.cs",
+    "SaveManager": "res://Scripts/Systems/SaveManager.cs",
+    "PauseMenuManager": "res://Scripts/UI/PauseMenuManager.cs",
+    "DebugOverlayManager": "res://Scripts/UI/DebugOverlayManager.cs"
   },
   "interaction_system": {
     "interface": "IInteractable (Interact(Node2D), GetInteractPrompt())",
     "detector": "Area2D Interactor on Player with CircleShape2D radius 64",
     "selection": "Nearest interactable within range",
-    "prompt": "Scenes/UI/InteractionPrompt.tscn, auto-show/hide"
+    "prompt": "InteractionPrompt shows/hides based on current target"
   },
-  "test_object": {
-    "scene": "Scenes/Props/TestNote.tscn",
-    "script": "Scripts/World/TestNote.cs",
-    "group": "Interactable",
-    "prompt": "按 [E] 阅读笔记",
-    "on_interact": "Prints a log line"
+  "test_objects": {
+    "note": {
+      "scene": "Scenes/Props/NotePickup.tscn",
+      "script": "Scripts/World/NotePickup.cs",
+      "prompt": "[E] 阅读笔记",
+      "on_interact": "Opens NoteReader UI"
+    },
+    "item": {
+      "scene": "Scenes/Props/ItemPickup.tscn",
+      "script": "Scripts/World/ItemPickup.cs",
+      "item_resource": "Resources/Items/TestKey.tres",
+      "on_interact": "Adds item to InventoryManager"
+    },
+    "door": {
+      "scene": "Scenes/Props/LockedDoor.tscn",
+      "script": "Scripts/World/LockedDoor.cs",
+      "required": "key_lab",
+      "on_interact": "Opens when player has the key"
+    }
   },
   "verify_steps": [
-    "Place Scenes/Props/TestNote.tscn near Player",
-    "Run game, approach note: prompt shows",
-    "Press E: console prints interaction log"
+    "Run Scenes/TestLevel.tscn",
+    "Approach key at right, press E to pick",
+    "Press I to view inventory list",
+    "Go to door, press E to open if key present",
+    "Go to left note, press E to open NoteReader; Close/Esc to dismiss"
   ],
   "next_suggestions": [
-    "Hook up interaction results to UI windows (notes, doors, etc.)",
-    "Add world-space prompt over target",
-    "Extend interactables for inventory/doors"
+    "Implement SceneLoader and door-based scene transitions",
+    "Add world-space prompt on targets and priority rules",
+    "Add AudioManager and basic SFX hooks",
+    "Add SaveManager and SettingsMenu skeleton",
+    "Add DebugOverlay for FPS/time/inventory count"
   ]
 }
-

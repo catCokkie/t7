@@ -1,18 +1,23 @@
 using Godot;
 using SilentTestimony.Interfaces;
+using SilentTestimony.UI;
 
 namespace SilentTestimony.World
 {
     public partial class TestNote : StaticBody2D, IInteractable
     {
+        [Export] public string Title = "测试笔记";
+        [Export(PropertyHint.MultilineText)] public string Content = "这是一条用于测试的笔记内容。";
+
         public string GetInteractPrompt()
         {
-            return "按 [E] 阅读笔记";
+            return "[E] 阅读笔记";
         }
 
         public void Interact(Node2D interactor)
         {
-            GD.Print($"{Name}: 玩家触发交互 -> 阅读笔记");
+            var reader = GetNodeOrNull<NoteReaderManager>("/root/NoteReaderManager");
+            reader?.ShowNote(Title, Content);
         }
     }
 }

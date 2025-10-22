@@ -1,0 +1,11 @@
+[gd_resource type="InventoryItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Data/InventoryItemData.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+ItemID = "key_lab"
+Name = "Laboratory Key"
+Description = "一把带有生锈编号的实验室钥匙。"
+IsKeyItem = true
+

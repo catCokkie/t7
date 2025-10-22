@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/DebugOverlay.cs" id="1_scr"]
+
+[node name="DebugOverlay" type="Control"]
+script = ExtResource("1_scr")
+layout_mode = 3
+anchors_preset = 1
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 8.0
+offset_top = 8.0
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(280, 180)
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+
+[node name="Title" type="Label" parent="Panel/VBox"]
+text = "Debug Overlay (F1) | Save (F5) | Load (F9)"
+
+[node name="FPS" type="Label" parent="Panel/VBox"]
+text = "FPS:"
+
+[node name="Time" type="Label" parent="Panel/VBox"]
+text = "Time:"
+
+[node name="Inventory" type="Label" parent="Panel/VBox"]
+text = "Inventory items:"
+
+[node name="Evidence" type="Label" parent="Panel/VBox"]
+text = "Evidence:"
+
+[node name="AICount" type="Label" parent="Panel/VBox"]
+text = "AI:"
+
+[node name="TimeScaleRow" type="HBoxContainer" parent="Panel/VBox"]
+
+[node name="Label" type="Label" parent="Panel/VBox/TimeScaleRow"]
+text = "TimeScale"
+
+[node name="Minus" type="Button" parent="Panel/VBox/TimeScaleRow"]
+text = "-"
+
+[node name="Value" type="Label" parent="Panel/VBox/TimeScaleRow"]
+text = "x1.0"
+
+[node name="Plus" type="Button" parent="Panel/VBox/TimeScaleRow"]
+text = "+"
+
+[node name="Status" type="Label" parent="Panel/VBox"]
+text = ""
+visible = false
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/VBox"]
+
+[node name="SaveButton" type="Button" parent="Panel/VBox/Buttons"]
+text = "Save"
+
+[node name="LoadButton" type="Button" parent="Panel/VBox/Buttons"]
+text = "Load"

@@ -27,6 +27,8 @@ namespace SilentTestimony.Player
         private readonly List<IInteractable> _nearbyInteractables = new();
         private Area2D _interactor;
         private CollisionShape2D _interactorShape;
+        private IInteractable _currentInteractTarget;
+        private InteractionPrompt _interactionPrompt;
 
         private void InitializeInteractor()
         {
@@ -70,6 +72,18 @@ namespace SilentTestimony.Player
                     GetTree()?.SetInputAsHandled();
                 }
             }
+        }
+
+        partial void InitializeInteraction()
+        {
+            InitializeInteractionPrompt();
+            RefreshInteractTarget(force: true);
+        }
+
+        partial void UpdateInteraction(double delta)
+        {
+            // 轻量轮询更新提示/目标
+            RefreshInteractTarget();
         }
 
         private void ApplyInteractRangeToShape()
@@ -146,14 +160,25 @@ namespace SilentTestimony.Player
             if (_interactionPrompt == null)
                 return;
 
+            var next = GetCurrentInteractTarget();
+            if (!force && ReferenceEquals(next, _currentInteractTarget))
+                return;
+
+            _currentInteractTarget = next;
+
             if (_currentInteractTarget != null)
-            {
-                _interactionPrompt.ShowPrompt(current.GetInteractPrompt());
-            }
+                _interactionPrompt.ShowPrompt(_currentInteractTarget.GetInteractPrompt());
             else
-            {
                 _interactionPrompt.HidePrompt();
-            }
+        }
+
+        private void InitializeInteractionPrompt()
+        {
+            if (_interactionPrompt != null)
+                return;
+
+            // 期望结构: Player/UIRoot/UI/InteractionPrompt
+            _interactionPrompt = GetNodeOrNull<InteractionPrompt>("UIRoot/UI/InteractionPrompt");
         }
     }
 }

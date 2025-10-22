@@ -1,0 +1,39 @@
+using Godot;
+using SilentTestimony.Interfaces;
+using SilentTestimony.Systems;
+
+namespace SilentTestimony.World
+{
+    /// <summary>
+    /// 交互后切换场景的门（可选出生点名）
+    /// </summary>
+    public partial class SceneDoor : StaticBody2D, IInteractable
+    {
+        [Export] public string TargetScenePath = string.Empty;
+        [Export] public string TargetSpawnPointName = string.Empty;
+
+        public string GetInteractPrompt()
+        {
+            return string.IsNullOrEmpty(TargetScenePath) ? "[E] 未配置传送" : "[E] 进入";
+        }
+
+        public void Interact(Node2D interactor)
+        {
+            if (string.IsNullOrEmpty(TargetScenePath))
+            {
+                GD.PushWarning($"SceneDoor: 未配置 TargetScenePath");
+                return;
+            }
+
+            var loader = GetNodeOrNull<SceneLoader>("/root/SceneLoader");
+            if (loader == null)
+            {
+                GD.PushError("SceneDoor: 未找到 SceneLoader（需要设置为 Autoload）");
+                return;
+            }
+
+            loader.ChangeScene(TargetScenePath, TargetSpawnPointName);
+        }
+    }
+}
+
