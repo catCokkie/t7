@@ -45,22 +45,22 @@
   - 枚举 `PlayerState { Walking, Sneaking }`  
   - 潜行时速度降低
 
-### 🧩 2.3 交互接口 (当前进行)
-- [ ] 创建 `Scripts/Interfaces/IInteractable.cs`  
-  - `void Interact(Node2D interactor)`  
-  - `string GetInteractPrompt()`  
-- [ ] 在 `PlayerController` 中集成交互检测逻辑  
-  - 添加列表 `_nearbyInteractables`  
+### 🧩 2.3 交互接口 (已完成)
+- [x] 创建 `Scripts/Interfaces/IInteractable.cs`
+  - `void Interact(Node2D interactor)`
+  - `string GetInteractPrompt()`
+- [x] 在 `PlayerController` 中集成交互检测逻辑
+  - 添加列表 `_nearbyInteractables`
   - 检测输入 `InputEvent` → 调用 `Interact()`
-- [ ] 创建示例对象 `TestNote.tscn` 实现接口  
+- [x] 创建示例对象 `TestNote.tscn` 实现接口
   - 测试输出 `"按 [E] 阅读笔记"`
 
-### 🧭 2.4 交互检测器 (下一步)
-- [ ] 在 `Player.tscn` 添加 `Area2D` 命名为 `Interactor`  
-- [ ] 添加检测范围 `CollisionShape2D`  
-- [ ] 在 `PlayerController` 绑定 `body_entered` / `body_exited` 信号  
-- [ ] 实现距离最近优先的交互逻辑  
-- [ ] 添加 UI 提示组件（InteractionPrompt）
+### 🧭 2.4 交互检测器 (已完成)
+- [x] 在 `Player.tscn` 添加 `Area2D` 命名为 `Interactor`
+- [x] 添加检测范围 `CollisionShape2D`
+- [x] 在 `PlayerController` 绑定 `body_entered` / `body_exited` 信号
+- [x] 实现距离最近优先的交互逻辑
+- [x] 添加 UI 提示组件（InteractionPrompt）
 
 ---
 
