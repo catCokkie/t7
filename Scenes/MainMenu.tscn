@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/MainMenu.cs" id="1_scr"]
+
+[node name="MainMenu" type="Control"]
+script = ExtResource("1_scr")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(360, 320)
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel"]
+layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="Title" type="Label" parent="Center/Panel/VBox"]
+text = "Silent Testimony"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+
+[node name="NewGameButton" type="Button" parent="Center/Panel/VBox"]
+text = "新游戏"
+
+[node name="ContinueButton" type="Button" parent="Center/Panel/VBox"]
+text = "继续"
+
+[node name="SettingsButton" type="Button" parent="Center/Panel/VBox"]
+text = "设置"
+
+[node name="QuitButton" type="Button" parent="Center/Panel/VBox"]
+text = "退出"
+

@@ -86,16 +86,17 @@ namespace SilentTestimony.Systems
             using var fa = FileAccess.Open(SavePath, FileAccess.ModeFlags.Read);
             if (fa == null) return;
             var text = fa.GetAsText();
-            var result = Json.ParseString(text) as Godot.Collections.Dictionary;
-            if (result == null) return;
+            var parsed = Json.ParseString(text);
+            if (parsed.VariantType != Variant.Type.Dictionary) return;
+            var result = parsed.AsGodotDictionary();
 
             string scenePath = result.ContainsKey("scene") ? (string)result["scene"] : "";
             float px = result.ContainsKey("player_x") ? (float)result["player_x"].AsDouble() : 0f;
             float py = result.ContainsKey("player_y") ? (float)result["player_y"].AsDouble() : 0f;
             int health = result.ContainsKey("health") ? (int)result["health"].AsInt32() : 100;
             int sanity = result.ContainsKey("sanity") ? (int)result["sanity"].AsInt32() : 100;
-            var items = result.ContainsKey("items") ? (Godot.Collections.Array)result["items"] : new Godot.Collections.Array();
-            var evidence = result.ContainsKey("evidence") ? (Godot.Collections.Array)result["evidence"] : new Godot.Collections.Array();
+            var items = result.ContainsKey("items") ? result["items"].AsGodotArray() : new Godot.Collections.Array();
+            var evidence = result.ContainsKey("evidence") ? result["evidence"].AsGodotArray() : new Godot.Collections.Array();
 
             // 切换场景
             if (!string.IsNullOrEmpty(scenePath))
@@ -201,4 +202,3 @@ namespace SilentTestimony.Systems
         }
     }
 }
-

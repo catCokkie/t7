@@ -25,7 +25,7 @@ namespace SilentTestimony.AI
         [ExportGroup("Perception")]
         [Export(PropertyHint.Range, "0,180,1")] private float _visionLoseAngle = 75.0f;
         [Export(PropertyHint.Range, "0,10,0.1")] private float _alertDuration = 3.0f;
-        [Export(PropertyHint.NodePath)] private NodePath _patrolContainerPath;
+        [Export] private NodePath _patrolContainerPath;
 
         private EnemyState _currentState = EnemyState.Patrolling;
         private readonly List<Node2D> _patrolPoints = new();

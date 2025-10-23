@@ -44,9 +44,8 @@ namespace SilentTestimony.UI
             if (@event.IsActionPressed("ui_cancel") && _noteReader != null && _noteReader.Visible)
             {
                 _noteReader.HideNote();
-                GetTree().SetInputAsHandled();
+                GetViewport()?.SetInputAsHandled();
             }
         }
     }
 }
-

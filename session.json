@@ -1,19 +1,19 @@
-{
+﻿{
   "project_root": ".",
   "tasks_completed": [
-    "2.3 交互接口",
-    "2.4 交互检测器",
-    "物品拾取（ItemPickup + TestKey）",
-    "笔记阅读 UI（NoteReader + NotePickup）",
-    "Inventory 覆盖层（I 键）",
-    "上锁门与钥匙验证（key_lab）",
-    "测试关卡与简易地面",
-    "叙事系统：Evidence（数据/管理/看板/UI 切换）",
-    "场景管理：SceneLoader + 场景门（Level1 ⇄ Level2）",
-    "系统功能：Settings/Save/Pause 完成",
-    "调试工具：DebugOverlay（F1/F5/F9）",
-    "反馈系统：AudioManager + PostProcess + Shaders",
-    "反馈系统：心跳-理智联动 + 脚步SFX"
+    "2.3 浜や簰鎺ュ彛",
+    "2.4 浜や簰妫€娴嬪櫒",
+    "鐗╁搧鎷惧彇锛圛temPickup + TestKey锛?,
+    "绗旇闃呰 UI锛圢oteReader + NotePickup锛?,
+    "Inventory 瑕嗙洊灞傦紙I 閿級",
+    "涓婇攣闂ㄤ笌閽ュ寵楠岃瘉锛坘ey_lab锛?,
+    "娴嬭瘯鍏冲崱涓庣畝鏄撳湴闈?,
+    "鍙欎簨绯荤粺锛欵vidence锛堟暟鎹?绠＄悊/鐪嬫澘/UI 鍒囨崲锛?,
+    "鍦烘櫙绠＄悊锛歋ceneLoader + 鍦烘櫙闂紙Level1 鈬?Level2锛?,
+    "绯荤粺鍔熻兘锛歋ettings/Save/Pause 瀹屾垚",
+    "璋冭瘯宸ュ叿锛欴ebugOverlay锛團1/F5/F9锛?,
+    "鍙嶉绯荤粺锛欰udioManager + PostProcess + Shaders",
+    "鍙嶉绯荤粺锛氬績璺?鐞嗘櫤鑱斿姩 + 鑴氭SFX"
   ],
   "changes": [
     {"path": "Scripts/Player/PlayerController.cs", "action": "modified"},
@@ -87,7 +87,7 @@
     "note": {
       "scene": "Scenes/Props/NotePickup.tscn",
       "script": "Scripts/World/NotePickup.cs",
-      "prompt": "[E] 阅读笔记",
+      "prompt": "[E] 闃呰绗旇",
       "on_interact": "Opens NoteReader UI"
     },
     "item": {
@@ -118,3 +118,4 @@
     "Add DebugOverlay for FPS/time/inventory count"
   ]
 }
+

@@ -57,9 +57,9 @@ namespace SilentTestimony.UI
             }
         }
 
-        private void OnItemSelected(int index)
+        private void OnItemSelected(long index)
         {
-            ShowDetail(index);
+            ShowDetail((int)index);
         }
 
         private void ShowDetail(int index)
@@ -71,4 +71,3 @@ namespace SilentTestimony.UI
         }
     }
 }
-

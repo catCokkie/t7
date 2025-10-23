@@ -10,7 +10,7 @@ namespace SilentTestimony.World
     public partial class LockedDoor : StaticBody2D, IInteractable
     {
         [Export] public string RequiredKeyItemID { get; set; } = string.Empty;
-        [Export] public NodePath AnimationPlayerPath { get; set; } = NodePath.Empty;
+        [Export] public NodePath AnimationPlayerPath { get; set; } = default;
 
         private bool _isOpened;
 
@@ -75,4 +75,3 @@ namespace SilentTestimony.World
         }
     }
 }
-

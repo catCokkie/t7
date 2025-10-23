@@ -124,8 +124,9 @@ namespace SilentTestimony.Systems
             if (fa == null) return;
             var text = fa.GetAsText();
             var result = Json.ParseString(text);
-            if (result is Godot.Collections.Dictionary dict)
+            if (result.VariantType == Variant.Type.Dictionary)
             {
+                var dict = result.AsGodotDictionary();
                 if (dict.ContainsKey("master_db")) MasterVolumeDb = (float)dict["master_db"].AsDouble();
                 if (dict.ContainsKey("music_db")) MusicVolumeDb = (float)dict["music_db"].AsDouble();
                 if (dict.ContainsKey("sfx_db")) SfxVolumeDb = (float)dict["sfx_db"].AsDouble();

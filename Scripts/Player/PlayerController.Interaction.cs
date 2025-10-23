@@ -69,7 +69,7 @@ namespace SilentTestimony.Player
 
                 if (handled)
                 {
-                    GetTree()?.SetInputAsHandled();
+                    GetViewport()?.SetInputAsHandled();
                 }
             }
         }

@@ -25,7 +25,7 @@ namespace SilentTestimony.UI
             if (@event.IsActionPressed("pause"))
             {
                 Toggle();
-                GetTree().SetInputAsHandled();
+                GetViewport()?.SetInputAsHandled();
             }
         }
 
@@ -45,4 +45,3 @@ namespace SilentTestimony.UI
         }
     }
 }
-

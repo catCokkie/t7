@@ -26,24 +26,23 @@ namespace SilentTestimony.UI
             if (@event.IsActionPressed("debug_toggle"))
             {
                 _overlay.Visible = !_overlay.Visible;
-                GetTree().SetInputAsHandled();
+                GetViewport()?.SetInputAsHandled();
                 return;
             }
             if (@event.IsActionPressed("quick_save"))
             {
                 GetNodeOrNull<SaveManager>("/root/SaveManager")?.SaveGame();
                 _overlay?.ShowStatus("Saved");
-                GetTree().SetInputAsHandled();
+                GetViewport()?.SetInputAsHandled();
                 return;
             }
             if (@event.IsActionPressed("quick_load"))
             {
                 GetNodeOrNull<SaveManager>("/root/SaveManager")?.LoadGame();
                 _overlay?.ShowStatus("Loaded");
-                GetTree().SetInputAsHandled();
+                GetViewport()?.SetInputAsHandled();
                 return;
             }
         }
     }
 }
-

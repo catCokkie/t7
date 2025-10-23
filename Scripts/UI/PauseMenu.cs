@@ -9,6 +9,8 @@ namespace SilentTestimony.UI
         private Button _settings;
         private Button _save;
         private Button _quit;
+        private Button _returnToMain;
+        private ConfirmationDialog _confirm;
         private Button _load;
         private Button _controls;
         private SettingsMenu _settingsMenu;
@@ -22,11 +24,15 @@ namespace SilentTestimony.UI
             _load = GetNodeOrNull<Button>("Center/Panel/VBox/LoadButton");
             _controls = GetNodeOrNull<Button>("Center/Panel/VBox/ControlsButton");
             _quit = GetNodeOrNull<Button>("Center/Panel/VBox/QuitButton");
+            _returnToMain = GetNodeOrNull<Button>("Center/Panel/VBox/ReturnToMainButton");
+            _confirm = GetNodeOrNull<ConfirmationDialog>("ConfirmDialog");
 
             _resume.Pressed += OnResume;
             _settings.Pressed += OnSettings;
             _save.Pressed += OnSave;
             _quit.Pressed += OnQuit;
+            if (_returnToMain != null) _returnToMain.Pressed += OnReturnToMain;
+            if (_confirm != null) _confirm.Confirmed += OnConfirmReturnToMain;
             if (_load != null) _load.Pressed += OnLoad;
             if (_controls != null) _controls.Pressed += OnControls;
 
@@ -72,6 +78,29 @@ namespace SilentTestimony.UI
         {
             GetTree().Paused = false;
             GetTree().Quit();
+        }
+
+        private void OnReturnToMain()
+        {
+            if (_confirm != null)
+            {
+                _confirm.DialogText = "返回主菜单将丢失未保存进度，确定吗？";
+                _confirm.PopupCentered();
+            }
+            else
+            {
+                OnConfirmReturnToMain();
+            }
+        }
+
+        private void OnConfirmReturnToMain()
+        {
+            GetTree().Paused = false;
+            var loader = GetNodeOrNull<SceneLoader>("/root/SceneLoader");
+            if (loader != null)
+                loader.ChangeScene("res://Scenes/MainMenu.tscn", null);
+            else
+                GetTree().ChangeSceneToFile("res://Scenes/MainMenu.tscn");
         }
     }
 }
