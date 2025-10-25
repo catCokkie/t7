@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+InputGuard="*res://Scripts/Systems/InputGuard.cs"
 TimeManager="*res://Scripts/Core/TimeManager.cs"
 PlayerStats="*res://Scripts/Core/PlayerStats.cs"
 GlobalEventBus="*res://Global/GlobalEventBus.cs"

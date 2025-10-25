@@ -1,4 +1,4 @@
-﻿[gd_scene format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/PauseMenu.cs" id="1_scr"]
 
@@ -53,7 +53,7 @@ text = "保存"
 text = "读取"
 
 [node name="ControlsButton" type="Button" parent="Center/Panel/VBox"]
-text = "控制（未实现）"
+text = "操作（未实现）"
 
 [node name="QuitButton" type="Button" parent="Center/Panel/VBox"]
 text = "退出"
@@ -64,3 +64,4 @@ text = "返回主菜单"
 [node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
 visible = false
 exclusive = true
+

@@ -1,6 +1,7 @@
 using Godot;
 using SilentTestimony.Core;
 using SilentTestimony.Systems;
+using System.Threading.Tasks;
 
 namespace SilentTestimony.UI
 {
@@ -14,6 +15,7 @@ namespace SilentTestimony.UI
         private CanvasLayer _layer;
         private ColorRect _vignette;
         private ColorRect _noise;
+        private ColorRect _fade;
         private PlayerStats _stats;
         private AudioManager _audio;
 
@@ -31,6 +33,7 @@ namespace SilentTestimony.UI
                 _layer.AddChild(root);
                 _vignette = root.GetNodeOrNull<ColorRect>("VignetteRect");
                 _noise = root.GetNodeOrNull<ColorRect>("NoiseRect");
+                _fade = root.GetNodeOrNull<ColorRect>("FadeRect");
             }
             else
             {
@@ -86,6 +89,30 @@ namespace SilentTestimony.UI
             {
                 _audio.PlayHeartbeat(t);
             }
+        }
+
+        public async Task FadeOut(float duration = 0.3f)
+        {
+            if (_fade == null) return;
+            var col = _fade.Color;
+            col.A = Mathf.Clamp(col.A, 0f, 1f);
+            _fade.Color = col;
+            var tween = CreateTween();
+            tween.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            tween.TweenProperty(_fade, "color:a", 1.0f, duration);
+            await ToSignal(tween, Tween.SignalName.Finished);
+        }
+
+        public async Task FadeIn(float duration = 0.3f)
+        {
+            if (_fade == null) return;
+            var col = _fade.Color;
+            col.A = Mathf.Clamp(col.A, 0f, 1f);
+            _fade.Color = col;
+            var tween = CreateTween();
+            tween.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            tween.TweenProperty(_fade, "color:a", 0.0f, duration);
+            await ToSignal(tween, Tween.SignalName.Finished);
         }
     }
 }

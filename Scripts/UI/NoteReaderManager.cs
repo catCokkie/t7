@@ -32,11 +32,13 @@ namespace SilentTestimony.UI
         public void ShowNote(string title, string content)
         {
             _noteReader?.ShowNote(title, content);
+            GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Acquire();
         }
 
         public void HideNote()
         {
             _noteReader?.HideNote();
+            GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
         }
 
         public override void _UnhandledInput(InputEvent @event)
@@ -44,6 +46,7 @@ namespace SilentTestimony.UI
             if (@event.IsActionPressed("ui_cancel") && _noteReader != null && _noteReader.Visible)
             {
                 _noteReader.HideNote();
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
                 GetViewport()?.SetInputAsHandled();
             }
         }

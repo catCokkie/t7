@@ -128,5 +128,39 @@ namespace SilentTestimony.Core
 		{
 			return $"Day {CurrentDay}";
 		}
+
+		/// <summary>
+		/// 设置游戏时间（用于读档或跳时）。可选择是否发出更改信号。
+		/// </summary>
+		/// <param name="day">>= 1</param>
+		/// <param name="hour">0.0 - 23.99</param>
+		/// <param name="emitSignals">是否广播 DayChanged/HourChanged</param>
+		public void SetClock(int day, float hour, bool emitSignals = true)
+		{
+			if (day < 1) day = 1;
+			// 规范化小时到 0..24 范围
+			if (hour < 0f) hour = 0f;
+			if (hour >= 24f) hour = hour % 24f;
+
+			int oldDay = CurrentDay;
+			int oldHour = (int)Mathf.Floor(CurrentTimeInHours);
+
+			CurrentDay = day;
+			CurrentTimeInHours = hour;
+			int newHour = (int)Mathf.Floor(CurrentTimeInHours);
+			_lastHourFired = newHour; // 避免下一帧重复触发
+
+			if (emitSignals)
+			{
+				if (CurrentDay != oldDay)
+				{
+					EmitSignal(SignalName.DayChanged, CurrentDay);
+				}
+				if (newHour != oldHour)
+				{
+					EmitSignal(SignalName.HourChanged, newHour);
+				}
+			}
+		}
 	}
 }

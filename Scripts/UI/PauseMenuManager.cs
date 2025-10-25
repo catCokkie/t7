@@ -36,11 +36,13 @@ namespace SilentTestimony.UI
             {
                 GetTree().Paused = false;
                 _menu.Visible = false;
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
             }
             else
             {
                 GetTree().Paused = true;
                 _menu.Visible = true;
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Acquire();
             }
         }
     }

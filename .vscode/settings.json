@@ -1,0 +1,6 @@
+{
+    "chatgpt.commentCodeLensEnabled": true,
+    // 避免 C# 扩展尝试通过 Source Link 打开 Godot 内部源码路径（如 /root/godot/...），
+    // 无法在本机存在，导致 “Cannot open file ... NativeCalls.cs”。
+    "dotnet.enableSourceLinkSupport": false
+}

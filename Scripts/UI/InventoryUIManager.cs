@@ -68,10 +68,12 @@ namespace SilentTestimony.UI
             if (_ui.Visible)
             {
                 _ui.Visible = false;
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
             }
             else
             {
                 _ui.ShowWithItems(_inventory.GetAllItems());
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Acquire();
             }
         }
     }

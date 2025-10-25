@@ -57,6 +57,12 @@ namespace SilentTestimony.Player
 
         public override void _PhysicsProcess(double delta)
         {
+            var guard = GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard");
+            if (guard != null && guard.Blocked)
+            {
+                Velocity = Vector2.Zero;
+                return;
+            }
             // 1. 处理输入并更新速度
             HandleInputAndState();
 

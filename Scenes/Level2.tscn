@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" path="res://Scenes/Actors/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/SceneDoor.tscn" id="2_door"]
 
+
 [sub_resource type="RectangleShape2D" id="GroundShape2"]
 size = Vector2(800, 24)
 

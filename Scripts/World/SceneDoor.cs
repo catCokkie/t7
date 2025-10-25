@@ -14,14 +14,15 @@ namespace SilentTestimony.World
 
         public string GetInteractPrompt()
         {
-            return string.IsNullOrEmpty(TargetScenePath) ? "[E] 未配置传送" : "[E] 进入";
+            // 由 InteractionPrompt 统一加“按 E：”前缀
+            return string.IsNullOrEmpty(TargetScenePath) ? "未配置传送" : "进入";
         }
 
         public void Interact(Node2D interactor)
         {
             if (string.IsNullOrEmpty(TargetScenePath))
             {
-                GD.PushWarning($"SceneDoor: 未配置 TargetScenePath");
+                GD.PushWarning("SceneDoor: 未配置 TargetScenePath");
                 return;
             }
 

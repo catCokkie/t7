@@ -37,12 +37,22 @@ namespace SilentTestimony.UI
             if (_controls != null) _controls.Pressed += OnControls;
 
             Visible = false;
+
+            UpdateButtons();
+
+            var saver = GetNodeOrNull<SaveManager>("/root/SaveManager");
+            if (saver != null)
+            {
+                saver.SaveCompleted += OnSaveOrLoadCompleted;
+                saver.LoadCompleted += OnSaveOrLoadCompleted;
+            }
         }
 
         private void OnResume()
         {
             GetTree().Paused = false;
             Visible = false;
+            GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
         }
 
         private void OnSettings()
@@ -54,6 +64,7 @@ namespace SilentTestimony.UI
                 AddChild(_settingsMenu);
             }
             _settingsMenu.Visible = true;
+            GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Acquire();
         }
 
         private void OnSave()
@@ -77,6 +88,7 @@ namespace SilentTestimony.UI
         private void OnQuit()
         {
             GetTree().Paused = false;
+            GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
             GetTree().Quit();
         }
 
@@ -96,11 +108,25 @@ namespace SilentTestimony.UI
         private void OnConfirmReturnToMain()
         {
             GetTree().Paused = false;
+            GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
             var loader = GetNodeOrNull<SceneLoader>("/root/SceneLoader");
             if (loader != null)
                 loader.ChangeScene("res://Scenes/MainMenu.tscn", null);
             else
                 GetTree().ChangeSceneToFile("res://Scenes/MainMenu.tscn");
+        }
+
+        private void UpdateButtons()
+        {
+            if (_load != null)
+            {
+                _load.Disabled = !FileAccess.FileExists("user://save.json");
+            }
+        }
+
+        private void OnSaveOrLoadCompleted()
+        {
+            UpdateButtons();
         }
     }
 }

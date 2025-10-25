@@ -54,6 +54,9 @@ namespace SilentTestimony.Player
 
         public override void _UnhandledInput(InputEvent @event)
         {
+            var guard = GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard");
+            if (guard != null && guard.Blocked)
+                return;
             if (@event.IsActionPressed("interact"))
             {
                 var target = GetCurrentInteractTarget();
@@ -82,6 +85,13 @@ namespace SilentTestimony.Player
 
         partial void UpdateInteraction(double delta)
         {
+            var guard = GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard");
+            if (guard != null && guard.Blocked)
+            {
+                InitializeInteractionPrompt();
+                _interactionPrompt?.HidePrompt();
+                return;
+            }
             // 轻量轮询更新提示/目标
             RefreshInteractTarget();
         }
@@ -95,7 +105,7 @@ namespace SilentTestimony.Player
         }
 
         // Signals from Area2D Interactor
-        private void OnInteractorBodyEntered(Node2D body)
+        private void OnInteractorBodyEntered(Node body)
         {
             if (body is IInteractable interactable)
             {
@@ -105,7 +115,7 @@ namespace SilentTestimony.Player
             }
         }
 
-        private void OnInteractorBodyExited(Node2D body)
+        private void OnInteractorBodyExited(Node body)
         {
             if (body is IInteractable interactable)
             {

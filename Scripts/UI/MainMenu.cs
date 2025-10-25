@@ -18,10 +18,16 @@ namespace SilentTestimony.UI
             _settings = GetNodeOrNull<Button>("Center/Panel/VBox/SettingsButton");
             _quit = GetNodeOrNull<Button>("Center/Panel/VBox/QuitButton");
 
-            _newGame.Pressed += OnNewGame;
-            _continue.Pressed += OnContinue;
-            _settings.Pressed += OnSettings;
-            _quit.Pressed += OnQuit;
+            if (_newGame != null) _newGame.Pressed += OnNewGame;
+            if (_continue != null) _continue.Pressed += OnContinue;
+            if (_settings != null) _settings.Pressed += OnSettings;
+            if (_quit != null) _quit.Pressed += OnQuit;
+
+            var saver = GetNodeOrNull<SaveManager>("/root/SaveManager");
+            if (saver != null)
+            {
+                saver.SaveCompleted += OnSaveCompleted;
+            }
 
             UpdateContinueEnabled();
         }
@@ -29,9 +35,19 @@ namespace SilentTestimony.UI
         private void UpdateContinueEnabled()
         {
             bool hasSave = FileAccess.FileExists("user://save.json");
-            if (_continue != null)
+            if (_continue == null)
+                return;
+
+            _continue.Disabled = !hasSave;
+            if (!hasSave)
+                return;
+
+            var saver = GetNodeOrNull<SaveManager>("/root/SaveManager");
+            var meta = saver?.GetSaveMeta();
+            if (meta != null)
             {
-                _continue.Disabled = !hasSave;
+                string shortInGame = $"{meta.DayStr} {meta.TimeStr}";
+                _continue.Text = $"Continue - {shortInGame} ({meta.LocalTimestampStr})";
             }
         }
 
@@ -47,10 +63,7 @@ namespace SilentTestimony.UI
         private void OnContinue()
         {
             var saver = GetNodeOrNull<SaveManager>("/root/SaveManager");
-            if (saver != null)
-            {
-                saver.LoadGame();
-            }
+            saver?.LoadGame();
         }
 
         private void OnSettings()
@@ -68,6 +81,11 @@ namespace SilentTestimony.UI
         {
             GetTree().Quit();
         }
+
+        private void OnSaveCompleted()
+        {
+            // Refresh Continue label when a save completes
+            UpdateContinueEnabled();
+        }
     }
 }
-

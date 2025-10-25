@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "E:\\t-731\\0.3\\t7\\SilentTestimony.csproj": {}
+    "H:\\pro\\t7\\SilentTestimony.csproj": {}
   },
   "projects": {
-    "E:\\t-731\\0.3\\t7\\SilentTestimony.csproj": {
+    "H:\\pro\\t7\\SilentTestimony.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\t-731\\0.3\\t7\\SilentTestimony.csproj",
+        "projectUniqueName": "H:\\pro\\t7\\SilentTestimony.csproj",
         "projectName": "SilentTestimony",
-        "projectPath": "E:\\t-731\\0.3\\t7\\SilentTestimony.csproj",
-        "packagesPath": "C:\\Users\\A\\.nuget\\packages\\",
-        "outputPath": "E:\\t-731\\0.3\\t7\\.godot\\mono\\temp\\obj\\",
+        "projectPath": "H:\\pro\\t7\\SilentTestimony.csproj",
+        "packagesPath": "C:\\Users\\12600K\\.nuget\\packages\\",
+        "outputPath": "H:\\pro\\t7\\.godot\\mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\A\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\12600K\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -75,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

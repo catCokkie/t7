@@ -2,9 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b8j1y11nrf1wt" path="res://Scripts/Player/PlayerController.cs" id="1_1p3rw"]
 [ext_resource type="Texture2D" uid="uid://drl1srhuynyua" path="res://icon.svg" id="1_jisj3"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/InteractionPrompt.tscn" id="2_prompt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jisj3"]
 size = Vector2(132, 128)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 64.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_1p3rw")
@@ -22,13 +26,8 @@ shape = SubResource("RectangleShape2D_jisj3")
 
 [node name="Interactor" type="Area2D" parent="."]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
-radius = 64.0
-
 [node name="InteractorShape" type="CollisionShape2D" parent="Interactor"]
 shape = SubResource("CircleShape2D_interact")
-
-[ext_resource type="PackedScene" path="res://Scenes/UI/InteractionPrompt.tscn" id="2_prompt"]
 
 [node name="UIRoot" type="CanvasLayer" parent="."]
 

@@ -1,4 +1,5 @@
 using Godot;
+using SilentTestimony.UI;
 
 namespace SilentTestimony.Systems
 {
@@ -19,6 +20,12 @@ namespace SilentTestimony.Systems
 
             _pendingSpawnName = spawnPointName;
 
+            var fader = GetNodeOrNull<PostProcessController>("/root/PostProcessController");
+            if (fader != null)
+            {
+                await fader.FadeOut(0.3f);
+            }
+
             var err = GetTree().ChangeSceneToFile(scenePath);
             if (err != Error.Ok)
             {
@@ -29,6 +36,18 @@ namespace SilentTestimony.Systems
             // 等待一帧，确保新场景树稳定
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
             ApplySpawnPoint();
+
+            if (fader != null)
+            {
+                await fader.FadeIn(0.3f);
+            }
+
+            // Autosave upon entering a new scene, unless we're currently loading a save
+            var saver = GetNodeOrNull<SaveManager>("/root/SaveManager");
+            if (saver != null && !saver.IsLoading)
+            {
+                saver.SaveGame();
+            }
         }
 
         private void ApplySpawnPoint()
@@ -68,6 +87,11 @@ namespace SilentTestimony.Systems
                 if (found != null) return found;
             }
             return null;
+        }
+
+        public override void _Process(double delta)
+        {
+            // no-op: ensure Node processes if needed in the future
         }
     }
 }

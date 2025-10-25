@@ -1,0 +1,29 @@
+# Godot editor caches (Godot 4)
+.godot/
+.import/
+
+# C# build artifacts
+**/bin/
+**/obj/
+.mono/
+.vs/
+
+# Exported builds
+Build/
+
+# OS/editor cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Rider/JetBrains
+.fleet
+.idea
+
+# Visual Studio Code (keep project settings if needed)
+# .vscode/

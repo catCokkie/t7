@@ -59,6 +59,15 @@ namespace SilentTestimony.UI
             {
                 Toggle();
                 GetViewport()?.SetInputAsHandled();
+                return;
+            }
+            if (@event.IsActionPressed("ui_cancel"))
+            {
+                if (_board != null && _board.Visible)
+                {
+                    _board.Visible = false;
+                    GetViewport()?.SetInputAsHandled();
+                }
             }
         }
 
@@ -68,10 +77,12 @@ namespace SilentTestimony.UI
             if (_board.Visible)
             {
                 _board.Visible = false;
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Release();
             }
             else
             {
                 _board.ShowWith(_evidence.GetAll());
+                GetNodeOrNull<SilentTestimony.Systems.InputGuard>("/root/InputGuard")?.Acquire();
             }
         }
     }
