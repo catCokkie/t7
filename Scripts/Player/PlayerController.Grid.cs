@@ -8,21 +8,96 @@ namespace SilentTestimony.Player
         [Export] private bool _useGridMovement = false;
         [Export(PropertyHint.Range, "4,128,1")] private int _cellSize = 16;
         [Export(PropertyHint.Range, "1,30,0.5")] private float _tilesPerSecond = 6f;
+        [Export] private NodePath _gridLayerPath;
 
         private bool _isGridMoving;
         private Vector2 _gridTargetWorld;
         private Tween _gridTween;
+        private TileMapLayer _gridLayer;
+
+        private TileMapLayer ResolveGridLayer()
+        {
+            if (_gridLayer != null && IsInstanceValid(_gridLayer))
+                return _gridLayer;
+
+            if (_gridLayerPath != null && !_gridLayerPath.IsEmpty)
+            {
+                _gridLayer = GetNodeOrNull<TileMapLayer>(_gridLayerPath);
+                if (_gridLayer != null)
+                    return _gridLayer;
+            }
+
+            Node levelRoot = GetTree().CurrentScene ?? GetParent();
+            if (levelRoot != null)
+            {
+                var tileWorld = levelRoot.GetNodeOrNull<Node>("TileWorld");
+                if (tileWorld != null)
+                {
+                    _gridLayer = FindLayerRecursively(tileWorld, "Ground")
+                                  ?? FindLayerRecursively(tileWorld, null);
+                }
+                else
+                {
+                    _gridLayer = FindLayerRecursively(levelRoot, "Ground")
+                                  ?? FindLayerRecursively(levelRoot, null);
+                }
+            }
+
+            return _gridLayer;
+        }
+
+        private TileMapLayer FindLayerRecursively(Node root, string name)
+        {
+            if (root == null) return null;
+            foreach (Node child in root.GetChildren())
+            {
+                if (child is TileMapLayer layer)
+                {
+                    if (string.IsNullOrEmpty(name) || layer.Name.Equals(name))
+                        return layer;
+                }
+                var found = FindLayerRecursively(child, name);
+                if (found != null) return found;
+            }
+            return null;
+        }
+
+        private Vector2I WorldToCell(Vector2 world)
+        {
+            var layer = ResolveGridLayer();
+            if (layer == null)
+            {
+                return new Vector2I(Mathf.FloorToInt(world.X / _cellSize), Mathf.FloorToInt(world.Y / _cellSize));
+            }
+            return layer.LocalToMap(layer.ToLocal(world));
+        }
+
+        private Vector2 CellToWorldCenter(Vector2I cell)
+        {
+            var layer = ResolveGridLayer();
+            if (layer == null)
+            {
+                return new Vector2(cell.X * _cellSize + _cellSize * 0.5f, cell.Y * _cellSize + _cellSize * 0.5f);
+            }
+            return layer.ToGlobal(layer.MapToLocal(cell));
+        }
+
+        private bool IsCellWalkable(Vector2I cell)
+        {
+            Vector2 target = CellToWorldCenter(cell);
+            Vector2 motion = target - GlobalPosition;
+            if (motion.LengthSquared() < 0.001f) return true;
+            return !TestMove(GlobalTransform, motion);
+        }
 
         private void HandleGridMovement(double delta)
         {
             if (!_useGridMovement)
                 return;
 
-            // 若正在移动，等待 Tween 完成
             if (_isGridMoving)
                 return;
 
-            // 读取输入并转换为 4 方向
             Vector2 input = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
             if (input == Vector2.Zero)
             {
@@ -36,7 +111,6 @@ namespace SilentTestimony.Player
             else
                 dir = new Vector2(0, Mathf.Sign(input.Y));
 
-            // 依据按键设置当前状态（影响脚步声与噪音节奏）
             if (Input.IsActionPressed("sneak"))
                 CurrentState = PlayerState.Sneaking;
             else if (Input.IsActionPressed("run"))
@@ -44,27 +118,23 @@ namespace SilentTestimony.Player
             else
                 CurrentState = PlayerState.Walking;
 
-            Vector2 motion = dir * _cellSize;
+            Vector2I currentCell = WorldToCell(GlobalPosition);
+            Vector2I targetCell = currentCell + new Vector2I((int)dir.X, (int)dir.Y);
 
-            // 物理探测：目标格若被阻挡则不移动
-            // 使用 PhysicsBody2D.TestMove 检查从当前变换到目标位移是否会撞到碰撞体
-            if (TestMove(GlobalTransform, motion))
+            if (!IsCellWalkable(targetCell))
             {
                 Velocity = Vector2.Zero;
                 return;
             }
 
-            // 启动到目标格的补间
             _isGridMoving = true;
-            _gridTargetWorld = GlobalPosition + motion;
+            _gridTargetWorld = CellToWorldCenter(targetCell);
 
-            // 让 Velocity 在移动期间为非零，维持噪音/脚步逻辑（不参与 MoveAndSlide）
             float speed = _walkSpeed;
             if (CurrentState == PlayerState.Sneaking) speed = _sneakSpeed;
             else if (CurrentState == PlayerState.Running) speed = _runSpeed;
             Velocity = dir * speed;
 
-            // 每格用固定时长（tiles/second）
             float duration = 1.0f / Mathf.Max(0.01f, _tilesPerSecond);
 
             _gridTween?.Kill();

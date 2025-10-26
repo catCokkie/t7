@@ -1,22 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://bms0nmcta77mg"]
+[gd_scene load_steps=10 format=3 uid="uid://bms0nmcta77mg"]
 
 [ext_resource type="PackedScene" uid="uid://3ddufvb0r7gn" path="res://Scenes/Actors/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/ItemPickup.tscn" id="2_item"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/NotePickup.tscn" id="3_note"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/LockedDoor.tscn" id="4_door"]
-[ext_resource type="InventoryItemData" path="res://Resources/Items/TestKey.tres" id="5_key"]
-[ext_resource type="EvidenceData" path="res://Resources/Evidence/TestNoteEvidence.tres" id="6_evidence"]
+[ext_resource type="Resource" path="res://Resources/Items/TestKey.tres" id="5_key"]
+[ext_resource type="Resource" path="res://Resources/Evidence/TestNoteEvidence.tres" id="6_evidence"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/SceneDoor.tscn" id="7_scene_door"]
-[ext_resource type="Script" path="res://Scripts/World/RuntimeTilemapBuilderLayers.cs" id="8_rt_builder"]
+[ext_resource type="Script" uid="uid://br01yub2chwu3" path="res://Scripts/World/RuntimeTilemapBuilderLayers.cs" id="8_rt_builder"]
 [ext_resource type="TileSet" path="res://Resources/Tiles/Minimal16.tres" id="9_tileset"]
-
-[sub_resource type="RectangleShape2D" id="GroundShape"]
-size = Vector2(800, 24)
 
 [node name="TestLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(715, 325)
+position = Vector2(433, 286)
 
 [node name="PickupKey" parent="." instance=ExtResource("2_item")]
 position = Vector2(519, 181)
@@ -44,7 +41,4 @@ TargetSpawnPointName = "Spawn_FromLevel1"
 
 [node name="RuntimeTilemapBuilder" type="Node2D" parent="TileWorld"]
 script = ExtResource("8_rt_builder")
-CellSize = 16
 TileSet = ExtResource("9_tileset")
-Rows = PackedStringArray("................................................","................................................","................................................","################################................")
-Mappings = PackedStringArray("#:G:0,0:full","=:G:0,0:half","*:D:0,0:none")
