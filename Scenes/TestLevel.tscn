@@ -13,27 +13,37 @@
 [node name="TestLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(433, 286)
+UseTileCoordinates = true
+TileCoords = Vector2i(27, 17)
+TileOffset = Vector2(1, 14)
 
 [node name="PickupKey" parent="." instance=ExtResource("2_item")]
-position = Vector2(519, 181)
+UseTileCoordinates = true
+TileCoords = Vector2i(32, 11)
+TileOffset = Vector2(7, 5)
 Item = ExtResource("5_key")
 
 [node name="Note1" parent="." instance=ExtResource("3_note")]
-position = Vector2(270, 234)
+UseTileCoordinates = true
+TileCoords = Vector2i(16, 14)
+TileOffset = Vector2(14, 10)
 Title = "初始笔记"
 Content = "欢迎来到 Demo！按 E 拾取/阅读，按 I 打开背包"
 Evidence = ExtResource("6_evidence")
 
 [node name="LockedDoorTest" parent="." instance=ExtResource("4_door")]
-position = Vector2(793, 80)
+UseTileCoordinates = true
+TileCoords = Vector2i(49, 5)
+TileOffset = Vector2(9, 0)
 RequiredKeyItemID = "key_lab"
 
 [node name="Spawn_FromLevel2" type="Node2D" parent="."]
 position = Vector2(160, 0)
 
 [node name="Door_ToLevel2" parent="." instance=ExtResource("7_scene_door")]
-position = Vector2(651, 73)
+UseTileCoordinates = true
+TileCoords = Vector2i(40, 4)
+TileOffset = Vector2(11, 9)
 TargetScenePath = "res://Scenes/Level2.tscn"
 TargetSpawnPointName = "Spawn_FromLevel1"
 

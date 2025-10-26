@@ -7,17 +7,37 @@ namespace SilentTestimony.World
 	/// <summary>
 	/// 需要钥匙才能开启的门。实现 IInteractable 接口
 	/// </summary>
-	public partial class LockedDoor : StaticBody2D, IInteractable
-	{
-		[Export] public string RequiredKeyItemID { get; set; } = string.Empty;
-		[Export] public NodePath AnimationPlayerPath { get; set; } = default;
+        public partial class LockedDoor : StaticBody2D, IInteractable
+        {
+                [ExportGroup("Tile Placement")]
+                [Export] public bool UseTileCoordinates { get; set; } = false;
+                [Export] public Vector2I TileCoords { get; set; } = Vector2I.Zero;
+                [Export] public Vector2 TileOffset { get; set; } = Vector2.Zero;
+                [Export(PropertyHint.Range, "4,256,1")] public float TileCellSize { get; set; } = 16f;
 
-		private bool _isOpened;
+                [Export] public string RequiredKeyItemID { get; set; } = string.Empty;
+                [Export] public NodePath AnimationPlayerPath { get; set; } = default;
 
-		public string GetInteractPrompt()
-		{
-			if (_isOpened)
-				return "通过";
+                private bool _isOpened;
+
+                public override void _Ready()
+                {
+                        base._Ready();
+                        ApplyTilePlacement();
+                }
+
+                private void ApplyTilePlacement()
+                {
+                        if (!UseTileCoordinates)
+                                return;
+
+                        GlobalPosition = RuntimeTilemapBuilderLayers.TileToWorldPosition(TileCoords, TileCellSize, TileOffset);
+                }
+
+                public string GetInteractPrompt()
+                {
+                        if (_isOpened)
+                                return "通过";
 
 			return string.IsNullOrEmpty(RequiredKeyItemID)
 				? "打开"
