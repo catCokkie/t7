@@ -28,6 +28,22 @@ namespace SilentTestimony.World
             "*:D:0,0:none"  // 装饰：放 Decor，无碰撞
         };
 
+        /// <summary>
+        /// 将瓦片坐标转换为世界坐标。可提供偏移量以便放置在格子中心或自定义位置。
+        /// </summary>
+        public static Vector2 TileToWorldPosition(Vector2I cell, float cellSize, Vector2 offset)
+        {
+            return new Vector2(cell.X * cellSize, cell.Y * cellSize) + offset;
+        }
+
+        /// <summary>
+        /// 使用当前关卡 CellSize 的便捷重载。
+        /// </summary>
+        public Vector2 TileToWorldPosition(Vector2I cell, Vector2 offset)
+        {
+            return TileToWorldPosition(cell, CellSize, offset);
+        }
+
         private struct MapRule
         {
             public char Ch;
@@ -76,14 +92,14 @@ namespace SilentTestimony.World
                         if (rule.Collider == "full")
                         {
                             var body = MakeRectBody(CellSize, CellSize);
-                            body.Position = new Vector2(c * CellSize + CellSize * 0.5f, r * CellSize + CellSize * 0.5f);
+                            body.Position = TileToWorldPosition(cell, new Vector2(CellSize * 0.5f, CellSize * 0.5f));
                             bodiesRoot.AddChild(body);
                         }
                         else if (rule.Collider == "half")
                         {
                             var body = MakeRectBody(CellSize, CellSize * 0.5f);
                             // 下半格：中心向下偏移 1/4 格
-                            body.Position = new Vector2(c * CellSize + CellSize * 0.5f, r * CellSize + CellSize * 0.75f);
+                            body.Position = TileToWorldPosition(cell, new Vector2(CellSize * 0.5f, CellSize * 0.75f));
                             bodiesRoot.AddChild(body);
                         }
                     }

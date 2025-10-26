@@ -3,6 +3,7 @@ using Godot;
 using System;
 using SilentTestimony.Global; // 引用 EventBus 的命名空间
 using SilentTestimony.Systems;
+using SilentTestimony.World;
 
 namespace SilentTestimony.Player
 {
@@ -21,6 +22,12 @@ namespace SilentTestimony.Player
         public PlayerState CurrentState { get; private set; } = PlayerState.Walking;
 
         // --- 导出属性(可在Godot编辑器中调整) ---
+        [ExportGroup("Tile Placement")]
+        [Export] public bool UseTileCoordinates { get; set; } = false;
+        [Export] public Vector2I TileCoords { get; set; } = Vector2I.Zero;
+        [Export] public Vector2 TileOffset { get; set; } = Vector2.Zero;
+        [Export(PropertyHint.Range, "4,256,1")] public float TileCellSize { get; set; } = 16f;
+
         [ExportGroup("Movement")]
         [Export] private float _sneakSpeed = 70.0f;
         [Export] private float _walkSpeed = 130.0f;
@@ -43,6 +50,7 @@ namespace SilentTestimony.Player
 
         public override void _Ready()
         {
+            ApplyTilePlacement();
             // 获取全局单例
             _eventBus = GetNode<GlobalEventBus>("/root/GlobalEventBus");
 
@@ -53,6 +61,16 @@ namespace SilentTestimony.Player
             // 初始化交互检测器与交互提示
             InitializeInteractor();
             InitializeInteraction();
+        }
+
+        private void ApplyTilePlacement()
+        {
+            if (!UseTileCoordinates)
+            {
+                return;
+            }
+
+            GlobalPosition = RuntimeTilemapBuilderLayers.TileToWorldPosition(TileCoords, TileCellSize, TileOffset);
         }
 
         public override void _PhysicsProcess(double delta)
