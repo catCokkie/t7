@@ -1,36 +1,53 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="PackedScene" path="res://Scenes/Actors/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/SceneDoor.tscn" id="2_door"]
-
-
-[sub_resource type="RectangleShape2D" id="GroundShape2"]
-size = Vector2(800, 24)
+[ext_resource type="Script" path="res://Scripts/World/RuntimeTilemapBuilderLayers.cs" id="3_runtime_builder"]
+[ext_resource type="TileSet" path="res://Resources/Tiles/Minimal16.tres" id="4_tileset"]
 
 [node name="Level2" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(0, 0)
+position = Vector2(-96, 0)
 
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(0, 48)
+[node name="TileWorld" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
-shape = SubResource("GroundShape2")
-
-[node name="Visual" type="Polygon2D" parent="Ground"]
-color = Color(0.25, 0.22, 0.2, 1)
-polygon = PackedVector2Array(-400, -12, 400, -12, 400, 12, -400, 12)
+[node name="RuntimeTilemapBuilder" type="Node2D" parent="TileWorld"]
+position = Vector2(-128, -104)
+script = ExtResource("3_runtime_builder")
+TileSet = ExtResource("4_tileset")
+Rows = PackedStringArray(
+"................",
+"................",
+"....==..........",
+"....==..##......",
+"................",
+"..###...........",
+"..#.#....##.....",
+"......##........",
+"......##........",
+"....######......",
+"################",
+"################",
+"################",
+"################",
+"################",
+"################"
+)
+Mappings = PackedStringArray(
+"#:G:0,0:full",
+"=:G:0,0:half"
+)
 
 [node name="Label" type="Label" parent="."]
 text = "Level 2"
 position = Vector2(-24, -64)
 
 [node name="Spawn_FromLevel1" type="Node2D" parent="."]
-position = Vector2(-160, 0)
+position = Vector2(-96, 0)
 
 [node name="Door_BackToLevel1" parent="." instance=ExtResource("2_door")]
-position = Vector2(220, 0)
+position = Vector2(96, 32)
 TargetScenePath = "res://Scenes/TestLevel.tscn"
 TargetSpawnPointName = "Spawn_FromLevel2"
 
