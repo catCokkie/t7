@@ -7,6 +7,8 @@
 [ext_resource type="InventoryItemData" path="res://Resources/Items/TestKey.tres" id="5_key"]
 [ext_resource type="EvidenceData" path="res://Resources/Evidence/TestNoteEvidence.tres" id="6_evidence"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/SceneDoor.tscn" id="7_scene_door"]
+[ext_resource type="Script" path="res://Scripts/World/RuntimeTilemapBuilderLayers.cs" id="8_rt_builder"]
+[ext_resource type="TileSet" path="res://Resources/Tiles/Minimal16.tres" id="9_tileset"]
 
 [sub_resource type="RectangleShape2D" id="GroundShape"]
 size = Vector2(800, 24)
@@ -38,14 +40,11 @@ position = Vector2(651, 73)
 TargetScenePath = "res://Scenes/Level2.tscn"
 TargetSpawnPointName = "Spawn_FromLevel1"
 
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(0, 48)
+[node name="TileWorld" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
-position = Vector2(572, 31)
-shape = SubResource("GroundShape")
-
-[node name="Visual" type="Polygon2D" parent="Ground"]
-position = Vector2(574, 33)
-color = Color(0.2, 0.22, 0.25, 1)
-polygon = PackedVector2Array(-400, -12, 400, -12, 400, 12, -400, 12)
+[node name="RuntimeTilemapBuilder" type="Node2D" parent="TileWorld"]
+script = ExtResource("8_rt_builder")
+CellSize = 16
+TileSet = ExtResource("9_tileset")
+Rows = PackedStringArray("................................................","................................................","................................................","################################................")
+Mappings = PackedStringArray("#:G:0,0:full","=:G:0,0:half","*:D:0,0:none")

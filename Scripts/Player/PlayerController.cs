@@ -63,6 +63,14 @@ namespace SilentTestimony.Player
                 Velocity = Vector2.Zero;
                 return;
             }
+            // 当启用网格步进时，由网格控制器处理位移与状态
+            if (_useGridMovement)
+            {
+                HandleGridMovement(delta);
+                UpdateNoiseTimer();
+                UpdateInteraction(delta);
+                return;
+            }
             // 1. 处理输入并更新速度
             HandleInputAndState();
 
