@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "lDRk962Rtk4=",
+  "dgSpecHash": "dpst6u6GQS0=",
   "success": true,
-  "projectFilePath": "H:\\pro\\t7\\SilentTestimony.csproj",
+  "projectFilePath": "E:\\t-731\\0.3\\t7\\SilentTestimony.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\12600K\\.nuget\\packages\\godot.sourcegenerators\\4.5.1\\godot.sourcegenerators.4.5.1.nupkg.sha512",
-    "C:\\Users\\12600K\\.nuget\\packages\\godotsharp\\4.5.1\\godotsharp.4.5.1.nupkg.sha512",
-    "C:\\Users\\12600K\\.nuget\\packages\\godotsharpeditor\\4.5.1\\godotsharpeditor.4.5.1.nupkg.sha512"
+    "C:\\Users\\A\\.nuget\\packages\\godot.sourcegenerators\\4.5.1\\godot.sourcegenerators.4.5.1.nupkg.sha512",
+    "C:\\Users\\A\\.nuget\\packages\\godotsharp\\4.5.1\\godotsharp.4.5.1.nupkg.sha512",
+    "C:\\Users\\A\\.nuget\\packages\\godotsharpeditor\\4.5.1\\godotsharpeditor.4.5.1.nupkg.sha512"
   ],
   "logs": []
 }

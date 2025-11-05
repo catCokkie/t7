@@ -1,0 +1,45 @@
+key,zh,en
+guide.name,向导,Guide
+
+dlg.adv_intro.n1.text,你找到钥匙了吗？需要的话可以给我看看证据。,Have you found the key? Show me evidence if you like.
+dlg.adv_intro.c1.use_key,使用钥匙开门,Use the key to open
+dlg.adv_intro.c1.show_evidence,给你看看证据,Show you the evidence
+dlg.adv_intro.c1.no,没有，继续找,No, keep searching
+dlg.adv_intro.n2.text,门已打开，出发去下一层。,The door is open, let's move to next level.
+dlg.adv_intro.n3.text,好的，已记录你的线索。,Alright, I've recorded your clue.
+dlg.adv_intro.n4.text,那就先四处看看。,Then look around for now.
+
+dlg.flag.n1.text,先简单互相认识一下？,Shall we introduce ourselves first?
+dlg.flag.c1.introduce,进行自我介绍,Introduce ourselves
+dlg.flag.c1.skip,以后再说,Maybe later
+dlg.flag.n2.text,好的，我们继续。,Okay, let's continue.
+dlg.flag.c2.briefing,开始任务简报,Start mission briefing
+dlg.flag.c2.need_intro,还没自我介绍，先去认识一下,We haven't introduced yet—let's do that first
+dlg.flag.c2.end,结束,End
+dlg.flag.n3.text,机密简报开始……,Classified briefing begins...
+dlg.flag.n4.text,那就先简单介绍一下吧。,Then let's do a quick intro.
+dlg.flag.n5.text,好的，稍后再谈。,Alright, we'll talk later.
+
+ui.prompt_format,按 E：{0},[E] {0}
+ui.close,关闭,Close
+ui.pickup,拾取：{0},Pick up: {0}
+ui.item,物品,Item
+ui.pass,通过,Pass
+ui.open,打开,Open
+ui.use_key,使用钥匙,Use key
+ui.enter,进入,Enter
+ui.read_note,阅读笔记,Read note
+ui.missing_target,未配置目标,Missing target
+
+ui.settings.title,设置,Settings
+ui.settings.master_db,主音量 (dB),Master Volume (dB)
+ui.settings.window_mode,窗口模式,Window Mode
+ui.settings.borderless,无边框窗口,Borderless Window
+ui.settings.music_db,音乐音量 (dB),Music Volume (dB)
+ui.settings.sfx_db,音效音量 (dB),SFX Volume (dB)
+ui.settings.resolution,分辨率,Resolution
+ui.settings.language,语言,Language
+ui.settings.windowed,窗口化,Windowed
+ui.settings.fullscreen,全屏,Fullscreen
+ui.lang.zh,中文,Chinese
+ui.lang.en,English,English

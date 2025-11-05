@@ -13,7 +13,7 @@ namespace SilentTestimony.World
     {
         [Export(PropertyHint.Range, "4,128,1")] public int CellSize { get; set; } = 16;
         [Export] public TileSet TileSet { get; set; }
-        [Export] public bool GenerateRuntimeBodies { get; set; } = true;
+        [Export] public bool GenerateRuntimeBodies { get; set; } = false; // 默认关闭：建议将碰撞定义在 TileSet 中
         [Export] public Godot.Collections.Array<string> Rows { get; set; } = new()
         {
             "................................................",

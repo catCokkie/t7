@@ -15,10 +15,16 @@ namespace SilentTestimony.Systems
         public DisplayServer.WindowMode WindowMode { get; private set; } = DisplayServer.WindowMode.Windowed;
         public Vector2I Resolution { get; private set; } = new Vector2I(1280, 720);
         public bool Borderless { get; private set; } = false;
+        public string Locale { get; private set; } = "zh";
 
         public override void _Ready()
         {
             LoadConfig();
+            // Apply locale first so UIs can pick up correct language
+            if (!string.IsNullOrEmpty(Locale))
+            {
+                TranslationServer.SetLocale(Locale);
+            }
             ApplySettings();
         }
 
@@ -56,6 +62,13 @@ namespace SilentTestimony.Systems
         {
             Borderless = on;
             ApplyWindow();
+        }
+
+        public void SetLocale(string locale)
+        {
+            if (string.IsNullOrEmpty(locale)) return;
+            Locale = locale;
+            TranslationServer.SetLocale(locale);
         }
 
         public void ApplySettings()
@@ -105,7 +118,8 @@ namespace SilentTestimony.Systems
                 { "window_mode", (int)WindowMode },
                 { "res_w", Resolution.X },
                 { "res_h", Resolution.Y },
-                { "borderless", Borderless }
+                { "borderless", Borderless },
+                { "locale", Locale }
             };
 
             using var fa = FileAccess.Open(ConfigPath, FileAccess.ModeFlags.Write);
@@ -135,6 +149,7 @@ namespace SilentTestimony.Systems
                 int h = dict.ContainsKey("res_h") ? (int)dict["res_h"].AsInt32() : Resolution.Y;
                 Resolution = new Vector2I(w, h);
                 if (dict.ContainsKey("borderless")) Borderless = dict["borderless"].AsBool();
+                if (dict.ContainsKey("locale")) Locale = (string)dict["locale"];
             }
         }
     }

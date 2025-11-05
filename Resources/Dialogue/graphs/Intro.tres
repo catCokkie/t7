@@ -1,0 +1,42 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueGraph.cs" id="1_graph"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueNode.cs" id="2_node"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueChoice.cs" id="3_choice"]
+
+[sub_resource type="Resource" id="n1"]
+script = ExtResource("2_node")
+NodeId = "n1"
+Speaker = "向导"
+Text = "你好，调查员。准备好开始了吗？"
+Choices = Array[Resource]([SubResource("c1_yes"), SubResource("c1_no")])
+
+[sub_resource type="Resource" id="c1_yes"]
+script = ExtResource("3_choice")
+Text = "出发吧"
+TargetNodeId = "n2"
+
+[sub_resource type="Resource" id="c1_no"]
+script = ExtResource("3_choice")
+Text = "再等等"
+TargetNodeId = "n3"
+
+[sub_resource type="Resource" id="n2"]
+script = ExtResource("2_node")
+NodeId = "n2"
+Speaker = "向导"
+Text = "好的，出发！"
+
+[sub_resource type="Resource" id="n3"]
+script = ExtResource("2_node")
+NodeId = "n3"
+Speaker = "向导"
+Text = "那就先四处看看。"
+
+[resource]
+script = ExtResource("1_graph")
+GraphId = "dlg.test.intro"
+Title = "测试开场"
+StartNodeId = "n1"
+Nodes = Array[Resource]([SubResource("n1"), SubResource("n2"), SubResource("n3")])
+

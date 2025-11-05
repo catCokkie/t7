@@ -10,9 +10,18 @@ namespace SilentTestimony.UI
         private HSlider _sfx;
         private OptionButton _windowMode;
         private OptionButton _resolution;
+        private OptionButton _language;
         private CheckBox _borderless;
         private Button _close;
         private SettingsManager _settings;
+        private Label _title;
+        private Label _lblVolume;
+        private Label _lblWindowMode;
+        private Label _lblBorderless;
+        private Label _lblMusic;
+        private Label _lblSfx;
+        private Label _lblResolution;
+        private Label _lblLanguage;
 
         public override void _Ready()
         {
@@ -22,11 +31,21 @@ namespace SilentTestimony.UI
             _volume = GetNodeOrNull<HSlider>("Center/Panel/VBox/Volume/Slider");
             _windowMode = GetNodeOrNull<OptionButton>("Center/Panel/VBox/WindowMode/Option");
             _resolution = GetNodeOrNull<OptionButton>("Center/Panel/VBox/Resolution/Option");
+            _language = GetNodeOrNull<OptionButton>("Center/Panel/VBox/Language/Option");
             _borderless = GetNodeOrNull<CheckBox>("Center/Panel/VBox/Borderless/Check");
             _music = GetNodeOrNull<HSlider>("Center/Panel/VBox/Music/Slider");
             _sfx = GetNodeOrNull<HSlider>("Center/Panel/VBox/SFX/Slider");
             _close = GetNodeOrNull<Button>("Center/Panel/VBox/Buttons/CloseButton");
+            _title = GetNodeOrNull<Label>("Center/Panel/VBox/Title");
+            _lblVolume = GetNodeOrNull<Label>("Center/Panel/VBox/Volume/Label");
+            _lblWindowMode = GetNodeOrNull<Label>("Center/Panel/VBox/WindowMode/Label");
+            _lblBorderless = GetNodeOrNull<Label>("Center/Panel/VBox/Borderless/Label");
+            _lblMusic = GetNodeOrNull<Label>("Center/Panel/VBox/Music/Label");
+            _lblSfx = GetNodeOrNull<Label>("Center/Panel/VBox/SFX/Label");
+            _lblResolution = GetNodeOrNull<Label>("Center/Panel/VBox/Resolution/Label");
+            _lblLanguage = GetNodeOrNull<Label>("Center/Panel/VBox/Language/Label");
 
+            ApplyLocalization();
             BuildOptions();
             LoadValues();
 
@@ -36,6 +55,7 @@ namespace SilentTestimony.UI
             if (_borderless != null) _borderless.Toggled += OnBorderlessToggled;
             if (_music != null) _music.ValueChanged += OnMusicChanged;
             if (_sfx != null) _sfx.ValueChanged += OnSfxChanged;
+            if (_language != null) _language.ItemSelected += OnLanguageSelected;
             if (_close != null) _close.Pressed += () => { Visible = false; };
 
             Visible = false;
@@ -44,13 +64,20 @@ namespace SilentTestimony.UI
         private void BuildOptions()
         {
             _windowMode?.Clear();
-            _windowMode?.AddItem("Windowed", (int)DisplayServer.WindowMode.Windowed);
-            _windowMode?.AddItem("Fullscreen", (int)DisplayServer.WindowMode.Fullscreen);
+            _windowMode?.AddItem(TranslationServer.Translate("ui.settings.windowed"), (int)DisplayServer.WindowMode.Windowed);
+            _windowMode?.AddItem(TranslationServer.Translate("ui.settings.fullscreen"), (int)DisplayServer.WindowMode.Fullscreen);
 
             _resolution?.Clear();
             _resolution?.AddItem("1280 x 720", 0);
             _resolution?.AddItem("1600 x 900", 1);
             _resolution?.AddItem("1920 x 1080", 2);
+
+            if (_language != null)
+            {
+                _language.Clear();
+                _language.AddItem(TranslationServer.Translate("ui.lang.zh"), 0);
+                _language.AddItem(TranslationServer.Translate("ui.lang.en"), 1);
+            }
         }
 
         private void LoadValues()
@@ -77,6 +104,17 @@ namespace SilentTestimony.UI
                 _resolution.Select(sel);
             }
             if (_borderless != null) _borderless.ButtonPressed = _settings.Borderless;
+            if (_language != null)
+            {
+                string loc = _settings.Locale ?? TranslationServer.GetLocale();
+                int idx = 1; // default en
+                if (!string.IsNullOrEmpty(loc))
+                {
+                    string l = loc.ToLowerInvariant();
+                    if (l.StartsWith("zh")) idx = 0;
+                }
+                _language.Select(idx);
+            }
         }
 
         private void OnVolumeChanged(double value)
@@ -123,6 +161,34 @@ namespace SilentTestimony.UI
         {
             _settings?.SetSfxVolumeDb((float)value);
             _settings?.SaveConfig();
+        }
+
+        private void OnLanguageSelected(long index)
+        {
+            if (_settings == null || _language == null) return;
+            string locale = index == 0 ? "zh" : "en";
+            _settings.SetLocale(locale);
+            _settings.SaveConfig();
+            ApplyLocalization();
+            BuildOptions();
+            LoadValues();
+        }
+
+        private void ApplyLocalization()
+        {
+            if (_title != null) _title.Text = TranslationServer.Translate("ui.settings.title");
+            if (_lblVolume != null) _lblVolume.Text = TranslationServer.Translate("ui.settings.master_db");
+            if (_lblWindowMode != null) _lblWindowMode.Text = TranslationServer.Translate("ui.settings.window_mode");
+            if (_lblBorderless != null) _lblBorderless.Text = TranslationServer.Translate("ui.settings.borderless");
+            if (_lblMusic != null) _lblMusic.Text = TranslationServer.Translate("ui.settings.music_db");
+            if (_lblSfx != null) _lblSfx.Text = TranslationServer.Translate("ui.settings.sfx_db");
+            if (_lblResolution != null) _lblResolution.Text = TranslationServer.Translate("ui.settings.resolution");
+            if (_lblLanguage != null) _lblLanguage.Text = TranslationServer.Translate("ui.settings.language");
+            if (_close != null)
+            {
+                var t = TranslationServer.Translate("ui.close");
+                if (!string.IsNullOrEmpty(t)) _close.Text = t;
+            }
         }
     }
 }

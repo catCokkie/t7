@@ -1,0 +1,73 @@
+[gd_resource type="Resource" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueGraph.cs" id="1_graph"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueNode.cs" id="2_node"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueChoice.cs" id="3_choice"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/Condition.cs" id="4_cond"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/Effect.cs" id="5_eff"]
+
+[sub_resource type="Resource" id="cond_has_key"]
+script = ExtResource("4_cond")
+Type = 3
+Key = "key_lab"
+
+[sub_resource type="Resource" id="eff_change_scene"]
+script = ExtResource("5_eff")
+Type = 5
+Key = "res://Scenes/Level2.tscn"
+Extra = "Spawn_FromLevel1"
+
+[sub_resource type="Resource" id="eff_add_evidence"]
+script = ExtResource("5_eff")
+Type = 4
+Key = "res://Resources/Evidence/TestNoteEvidence.tres"
+
+[sub_resource type="Resource" id="n1"]
+script = ExtResource("2_node")
+NodeId = "n1"
+SpeakerKey = "guide.name"
+TextKey = "dlg.adv_intro.n1.text"
+Choices = Array[Resource]([SubResource("c1_use_key"), SubResource("c1_show_evidence"), SubResource("c1_no")])
+
+[sub_resource type="Resource" id="c1_use_key"]
+script = ExtResource("3_choice")
+TextKey = "dlg.adv_intro.c1.use_key"
+Conditions = Array[Resource]([SubResource("cond_has_key")])
+Effects = Array[Resource]([SubResource("eff_change_scene")])
+TargetNodeId = "n2"
+
+[sub_resource type="Resource" id="c1_show_evidence"]
+script = ExtResource("3_choice")
+TextKey = "dlg.adv_intro.c1.show_evidence"
+Effects = Array[Resource]([SubResource("eff_add_evidence")])
+TargetNodeId = "n3"
+
+[sub_resource type="Resource" id="c1_no"]
+script = ExtResource("3_choice")
+TextKey = "dlg.adv_intro.c1.no"
+TargetNodeId = "n4"
+
+[sub_resource type="Resource" id="n2"]
+script = ExtResource("2_node")
+NodeId = "n2"
+SpeakerKey = "guide.name"
+TextKey = "dlg.adv_intro.n2.text"
+
+[sub_resource type="Resource" id="n3"]
+script = ExtResource("2_node")
+NodeId = "n3"
+SpeakerKey = "guide.name"
+TextKey = "dlg.adv_intro.n3.text"
+
+[sub_resource type="Resource" id="n4"]
+script = ExtResource("2_node")
+NodeId = "n4"
+SpeakerKey = "guide.name"
+TextKey = "dlg.adv_intro.n4.text"
+
+[resource]
+script = ExtResource("1_graph")
+GraphId = "dlg.test.advanced_intro"
+Title = "测试开场（条件与效果）"
+StartNodeId = "n1"
+Nodes = Array[Resource]([SubResource("n1"), SubResource("n2"), SubResource("n3"), SubResource("n4")])

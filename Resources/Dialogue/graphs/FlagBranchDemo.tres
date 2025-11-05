@@ -1,0 +1,95 @@
+[gd_resource type="Resource" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueGraph.cs" id="1_graph"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueNode.cs" id="2_node"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueChoice.cs" id="3_choice"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/Condition.cs" id="4_cond"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/Effect.cs" id="5_eff"]
+
+[sub_resource type="Resource" id="cond_met_true"]
+script = ExtResource("4_cond")
+Type = 1
+Key = "met_guide"
+
+[sub_resource type="Resource" id="cond_met_false"]
+script = ExtResource("4_cond")
+Type = 2
+Key = "met_guide"
+
+[sub_resource type="Resource" id="eff_set_met_true"]
+script = ExtResource("5_eff")
+Type = 1
+Key = "met_guide"
+
+[sub_resource type="Resource" id="eff_set_met_false"]
+script = ExtResource("5_eff")
+Type = 2
+Key = "met_guide"
+
+[sub_resource type="Resource" id="n1"]
+script = ExtResource("2_node")
+NodeId = "n1"
+SpeakerKey = "guide.name"
+TextKey = "dlg.flag.n1.text"
+Choices = Array[Resource]([SubResource("c1_introduce"), SubResource("c1_skip")])
+
+[sub_resource type="Resource" id="c1_introduce"]
+script = ExtResource("3_choice")
+TextKey = "dlg.flag.c1.introduce"
+Effects = Array[Resource]([SubResource("eff_set_met_true")])
+TargetNodeId = "n2"
+
+[sub_resource type="Resource" id="c1_skip"]
+script = ExtResource("3_choice")
+TextKey = "dlg.flag.c1.skip"
+Effects = Array[Resource]([SubResource("eff_set_met_false")])
+TargetNodeId = "n2"
+
+[sub_resource type="Resource" id="n2"]
+script = ExtResource("2_node")
+NodeId = "n2"
+SpeakerKey = "guide.name"
+TextKey = "dlg.flag.n2.text"
+Choices = Array[Resource]([SubResource("c2_briefing"), SubResource("c2_need_intro"), SubResource("c2_end")])
+
+[sub_resource type="Resource" id="c2_briefing"]
+script = ExtResource("3_choice")
+TextKey = "dlg.flag.c2.briefing"
+Conditions = Array[Resource]([SubResource("cond_met_true")])
+TargetNodeId = "n3"
+
+[sub_resource type="Resource" id="c2_need_intro"]
+script = ExtResource("3_choice")
+TextKey = "dlg.flag.c2.need_intro"
+Conditions = Array[Resource]([SubResource("cond_met_false")])
+TargetNodeId = "n4"
+
+[sub_resource type="Resource" id="c2_end"]
+script = ExtResource("3_choice")
+TextKey = "dlg.flag.c2.end"
+TargetNodeId = "n5"
+
+[sub_resource type="Resource" id="n3"]
+script = ExtResource("2_node")
+NodeId = "n3"
+SpeakerKey = "guide.name"
+TextKey = "dlg.flag.n3.text"
+
+[sub_resource type="Resource" id="n4"]
+script = ExtResource("2_node")
+NodeId = "n4"
+SpeakerKey = "guide.name"
+TextKey = "dlg.flag.n4.text"
+
+[sub_resource type="Resource" id="n5"]
+script = ExtResource("2_node")
+NodeId = "n5"
+SpeakerKey = "guide.name"
+TextKey = "dlg.flag.n5.text"
+
+[resource]
+script = ExtResource("1_graph")
+GraphId = "dlg.test.flag_branch"
+Title = "旗标控制分支示例"
+StartNodeId = "n1"
+Nodes = Array[Resource]([SubResource("n1"), SubResource("n2"), SubResource("n3"), SubResource("n4"), SubResource("n5")])

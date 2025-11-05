@@ -10,7 +10,9 @@ namespace SilentTestimony.Data
         {
                 [Export] public string ItemID { get; set; } = string.Empty;
                 [Export] public string Name { get; set; } = string.Empty;
+                [Export] public string NameKey { get; set; } = string.Empty;
                 [Export(PropertyHint.MultilineText)] public string Description { get; set; } = string.Empty;
+                [Export] public string DescriptionKey { get; set; } = string.Empty;
                 [Export] public Texture2D Icon { get; set; }
                 [Export] public bool IsKeyItem { get; set; }
         }

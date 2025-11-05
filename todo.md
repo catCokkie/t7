@@ -20,6 +20,13 @@
   - [x] 主菜单继续/读取统一走 `SaveManager`
   - [x] 读档恢复游戏时间：`TimeManager.SetClock(day, hour)`
   - [ ] 设计变更：取消“季节 Season 元数据”及其在 Continue 的展示（不纳入本阶段）
+ 
+- [x] 瓦片/网格统一（16×16）
+  - [x] 新增 `GridUtility` 作为唯一格子尺寸与转换入口
+  - [x] 物件脚本移除 `TileCellSize`，统一使用全局 CellSize=16
+  - [x] 玩家网格移动的回退格子大小改为全局 `GridUtility.CellSize`
+  - [x] `Minimal16.tres` 配置 (0,0) 基础瓦片 16×16 占位碰撞
+  - [x] `RuntimeTilemapBuilderLayers.GenerateRuntimeBodies` 默认关闭（碰撞改在 TileSet 内维护）
 - [ ] UI/UX 抛光
   - [ ] 交互提示文案风格统一（样式：按 E：{动作}；超 24 字省略；0.15s 淡出）
   - [x] NoteReader/EvidenceBoard 打开/关闭；Esc 可关闭

@@ -18,7 +18,12 @@ namespace SilentTestimony.UI
             _title = GetNodeOrNull<Label>("CenterContainer/Panel/HBox/Detail/Title");
             _content = GetNodeOrNull<RichTextLabel>("CenterContainer/Panel/HBox/Detail/Content");
             _close = GetNodeOrNull<Button>("CenterContainer/Panel/Bottom/CloseButton");
-            if (_close != null) _close.Pressed += () => Visible = false;
+            if (_close != null)
+            {
+                _close.Pressed += () => Visible = false;
+                var t = TranslationServer.Translate("ui.close");
+                if (!string.IsNullOrEmpty(t)) _close.Text = t;
+            }
             if (_list != null) _list.ItemSelected += OnItemSelected;
             Visible = false;
         }
@@ -43,7 +48,21 @@ namespace SilentTestimony.UI
             for (int i = 0; i < _data.Count; i++)
             {
                 var d = _data[i];
-                _list.AddItem(string.IsNullOrEmpty(d?.Title) ? d?.EvidenceID ?? "(null)" : d.Title);
+                string title = d?.EvidenceID ?? "(null)";
+                if (d != null)
+                {
+                    if (!string.IsNullOrEmpty(d.TitleKey))
+                    {
+                        var t = TranslationServer.Translate(d.TitleKey);
+                        if (!string.IsNullOrEmpty(t)) title = t;
+                        else if (!string.IsNullOrEmpty(d.Title)) title = d.Title;
+                    }
+                    else if (!string.IsNullOrEmpty(d.Title))
+                    {
+                        title = d.Title;
+                    }
+                }
+                _list.AddItem(title);
             }
             if (_data.Count > 0)
             {
@@ -66,8 +85,27 @@ namespace SilentTestimony.UI
         {
             if (_data == null || index < 0 || index >= _data.Count) return;
             var d = _data[index];
-            if (_title != null) _title.Text = d?.Title ?? "";
-            if (_content != null) { _content.Text = d?.Content ?? ""; _content.ScrollToLine(0); }
+            if (_title != null)
+            {
+                var title = d?.Title ?? string.Empty;
+                if (!string.IsNullOrEmpty(d?.TitleKey))
+                {
+                    var t = TranslationServer.Translate(d.TitleKey);
+                    if (!string.IsNullOrEmpty(t)) title = t;
+                }
+                _title.Text = title;
+            }
+            if (_content != null)
+            {
+                var content = d?.Content ?? string.Empty;
+                if (!string.IsNullOrEmpty(d?.ContentKey))
+                {
+                    var t = TranslationServer.Translate(d.ContentKey);
+                    if (!string.IsNullOrEmpty(t)) content = t;
+                }
+                _content.Text = content;
+                _content.ScrollToLine(0);
+            }
         }
     }
 }

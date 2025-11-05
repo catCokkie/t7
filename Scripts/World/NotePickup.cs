@@ -15,7 +15,6 @@ namespace SilentTestimony.World
                 [Export] public bool UseTileCoordinates { get; set; } = false;
                 [Export] public Vector2I TileCoords { get; set; } = Vector2I.Zero;
                 [Export] public Vector2 TileOffset { get; set; } = Vector2.Zero;
-                [Export(PropertyHint.Range, "4,256,1")] public float TileCellSize { get; set; } = 16f;
 
                 [Export] public string Title = "未命名笔记";
                 [Export(PropertyHint.MultilineText)] public string Content = "";
@@ -33,12 +32,12 @@ namespace SilentTestimony.World
                         if (!UseTileCoordinates)
                                 return;
 
-                        GlobalPosition = RuntimeTilemapBuilderLayers.TileToWorldPosition(TileCoords, TileCellSize, TileOffset);
+                        GlobalPosition = GridUtility.TileToWorldPosition(TileCoords, TileOffset);
                 }
 
                 public string GetInteractPrompt()
                 {
-                        return "阅读笔记";
+                        return TranslationServer.Translate("ui.read_note");
                 }
 
 		public void Interact(Node2D interactor)
@@ -51,14 +50,29 @@ namespace SilentTestimony.World
 			}
 
 			// 先登记证据（如果有）
-			if (Evidence != null)
-			{
-				var ev = GetNodeOrNull<EvidenceManager>("/root/EvidenceManager");
-				ev?.AddEvidence(Evidence);
-				// 使用证据内容展示
-				reader.ShowNote(string.IsNullOrEmpty(Evidence.Title) ? Title : Evidence.Title,
-								string.IsNullOrEmpty(Evidence.Content) ? Content : Evidence.Content);
-			}
+                        if (Evidence != null)
+                        {
+                                var ev = GetNodeOrNull<EvidenceManager>("/root/EvidenceManager");
+                                ev?.AddEvidence(Evidence);
+                                // 使用证据本地化内容展示（优先 Key）
+                                string title = Evidence.Title;
+                                if (!string.IsNullOrEmpty(Evidence.TitleKey))
+                                {
+                                        var t = TranslationServer.Translate(Evidence.TitleKey);
+                                        if (!string.IsNullOrEmpty(t)) title = t;
+                                }
+                                if (string.IsNullOrEmpty(title)) title = Title;
+
+                                string content = Evidence.Content;
+                                if (!string.IsNullOrEmpty(Evidence.ContentKey))
+                                {
+                                        var t2 = TranslationServer.Translate(Evidence.ContentKey);
+                                        if (!string.IsNullOrEmpty(t2)) content = t2;
+                                }
+                                if (string.IsNullOrEmpty(content)) content = Content;
+
+                                reader.ShowNote(title, content);
+                        }
 			else
 			{
 				reader.ShowNote(Title, Content);

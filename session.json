@@ -1,19 +1,20 @@
 ﻿{
   "project_root": ".",
   "tasks_completed": [
-    "2.3 浜や簰鎺ュ彛",
-    "2.4 浜や簰妫€娴嬪櫒",
-    "鐗╁搧鎷惧彇锛圛temPickup + TestKey锛?,
-    "绗旇闃呰 UI锛圢oteReader + NotePickup锛?,
-    "Inventory 瑕嗙洊灞傦紙I 閿級",
-    "涓婇攣闂ㄤ笌閽ュ寵楠岃瘉锛坘ey_lab锛?,
-    "娴嬭瘯鍏冲崱涓庣畝鏄撳湴闈?,
-    "鍙欎簨绯荤粺锛欵vidence锛堟暟鎹?绠＄悊/鐪嬫澘/UI 鍒囨崲锛?,
-    "鍦烘櫙绠＄悊锛歋ceneLoader + 鍦烘櫙闂紙Level1 鈬?Level2锛?,
-    "绯荤粺鍔熻兘锛歋ettings/Save/Pause 瀹屾垚",
-    "璋冭瘯宸ュ叿锛欴ebugOverlay锛團1/F5/F9锛?,
-    "鍙嶉绯荤粺锛欰udioManager + PostProcess + Shaders",
-    "鍙嶉绯荤粺锛氬績璺?鐞嗘櫤鑱斿姩 + 鑴氭SFX"
+    "2.3 交互接口",
+    "2.4 交互检测器",
+    "物品拾取（ItemPickup + TestKey）",
+    "笔记阅读 UI（NoteReader + NotePickup）",
+    "Inventory 覆盖层（I 键）",
+    "上锁门与钥匙验证（key_lab）",
+    "测试关卡与简易地图",
+    "叙事系统：Evidence（数据管理/看板/UI 切换）",
+    "场景管理：SceneLoader + 场景门（Level1 <-> Level2）",
+    "系统功能：Settings/Save/Pause 完成",
+    "调试工具：DebugOverlay（F1/F5/F9）",
+    "反馈系统：AudioManager + PostProcess + Shaders",
+    "反馈系统：心跳/理智联动 + 脚步SFX",
+    "瓦片/网格统一：GridUtility + 全局 CellSize=16；移除 TileCellSize；玩家回退统一；TileSet 占位碰撞；默认关闭运行时碰撞"
   ],
   "changes": [
     {"path": "Scripts/Player/PlayerController.cs", "action": "modified"},
@@ -49,7 +50,16 @@
 
     {"path": "Scenes/Actors/Player.tscn", "action": "modified"},
     {"path": "Scenes/TestLevel.tscn", "action": "added"},
-    {"path": "project.godot", "action": "modified"}
+    {"path": "project.godot", "action": "modified"},
+
+    {"path": "Scripts/World/GridUtility.cs", "action": "added"},
+    {"path": "Scripts/World/ItemPickup.cs", "action": "modified"},
+    {"path": "Scripts/World/LockedDoor.cs", "action": "modified"},
+    {"path": "Scripts/World/SceneDoor.cs", "action": "modified"},
+    {"path": "Scripts/World/NotePickup.cs", "action": "modified"},
+    {"path": "Scripts/Player/PlayerController.Grid.cs", "action": "modified"},
+    {"path": "Resources/Tiles/Minimal16.tres", "action": "modified"},
+    {"path": "Scripts/World/RuntimeTilemapBuilderLayers.cs", "action": "modified"}
   ],
   "input_actions": {
     "interact": {"key": "E", "section": "[input]"},
@@ -87,7 +97,7 @@
     "note": {
       "scene": "Scenes/Props/NotePickup.tscn",
       "script": "Scripts/World/NotePickup.cs",
-      "prompt": "[E] 闃呰绗旇",
+      "prompt": "[E] 阅读笔记",
       "on_interact": "Opens NoteReader UI"
     },
     "item": {
@@ -108,14 +118,16 @@
     "Approach key at right, press E to pick",
     "Press I to view inventory list",
     "Go to door, press E to open if key present",
-    "Go to left note, press E to open NoteReader; Close/Esc to dismiss"
+    "Go to left note, press E to open NoteReader; Close/Esc to dismiss",
+    "Verify player grid alignment (centers on 16×16 tiles) and no wall tunneling",
+    "Verify walls have collision via TileSet without runtime bodies"
   ],
   "next_suggestions": [
-    "Implement SceneLoader and door-based scene transitions",
-    "Add world-space prompt on targets and priority rules",
-    "Add AudioManager and basic SFX hooks",
-    "Add SaveManager and SettingsMenu skeleton",
-    "Add DebugOverlay for FPS/time/inventory count"
+    "将关卡字符地图 Rows/Mappings 提取为资源文件并复用",
+    "为更多 atlas 切片配置碰撞（如半砖半高矩形）",
+    "统一 TileWorld/RuntimeTilemapBuilderLayers 于所有关卡并校验 CellSize=16",
+    "提示样式统一 + SFX；音频总线与设置联动",
+    "增加编辑器工具：字符地图→TileMap 预览/导出"
   ]
 }
 

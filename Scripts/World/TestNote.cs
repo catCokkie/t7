@@ -11,7 +11,7 @@ namespace SilentTestimony.World
 
 		public string GetInteractPrompt()
 		{
-			return "阅读笔记";
+			return TranslationServer.Translate("ui.read_note");
 		}
 
 		public void Interact(Node2D interactor)

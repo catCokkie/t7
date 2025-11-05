@@ -17,6 +17,8 @@ namespace SilentTestimony.UI
             if (_closeButton != null)
             {
                 _closeButton.Pressed += HideNote;
+                var t = TranslationServer.Translate("ui.close");
+                if (!string.IsNullOrEmpty(t)) _closeButton.Text = t;
             }
 
             Visible = false;
@@ -35,4 +37,3 @@ namespace SilentTestimony.UI
         }
     }
 }
-

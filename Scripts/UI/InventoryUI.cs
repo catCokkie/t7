@@ -30,10 +30,22 @@ namespace SilentTestimony.UI
             if (items == null) return;
             foreach (var it in items)
             {
-                var name = string.IsNullOrEmpty(it?.Name) ? it?.ItemID ?? "(null)" : it.Name;
+                string name = it?.ItemID ?? "(null)";
+                if (it != null)
+                {
+                    if (!string.IsNullOrEmpty(it.NameKey))
+                    {
+                        var t = TranslationServer.Translate(it.NameKey);
+                        if (!string.IsNullOrEmpty(t)) name = t;
+                        else if (!string.IsNullOrEmpty(it.Name)) name = it.Name;
+                    }
+                    else if (!string.IsNullOrEmpty(it.Name))
+                    {
+                        name = it.Name;
+                    }
+                }
                 _list.AddItem(name);
             }
         }
     }
 }
-

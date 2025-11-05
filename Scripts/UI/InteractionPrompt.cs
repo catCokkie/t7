@@ -41,23 +41,19 @@ namespace SilentTestimony.UI
 
         private string FormatText(string raw)
         {
-            string t = raw ?? "";
-            // 统一样式：按 E：{动作}
-            if (!string.IsNullOrEmpty(t))
+            string action = raw ?? string.Empty;
+            if (string.IsNullOrEmpty(action)) return string.Empty;
+
+            var fmt = TranslationServer.Translate("ui.prompt_format");
+            if (string.IsNullOrEmpty(fmt)) fmt = "[E] {0}";
+            string text = string.Format(fmt, action);
+
+            const int max = 24;
+            if (text.Length > max)
             {
-                // 尝试避免重复加前缀
-                if (!(t.StartsWith("按 E") || t.StartsWith("E ") || t.StartsWith("E：") || t.StartsWith("E:") ))
-                {
-                    t = $"按 E：{t}";
-                }
-                // 超长截断（约 24 字）
-                const int max = 24;
-                if (t.Length > max)
-                {
-                    t = t.Substring(0, max) + "…";
-                }
+                text = text.Substring(0, max) + "…";
             }
-            return t;
+            return text;
         }
     }
 }

@@ -13,7 +13,6 @@ namespace SilentTestimony.World
                 [Export] public bool UseTileCoordinates { get; set; } = false;
                 [Export] public Vector2I TileCoords { get; set; } = Vector2I.Zero;
                 [Export] public Vector2 TileOffset { get; set; } = Vector2.Zero;
-                [Export(PropertyHint.Range, "4,256,1")] public float TileCellSize { get; set; } = 16f;
 
                 [Export] public string RequiredKeyItemID { get; set; } = string.Empty;
                 [Export] public NodePath AnimationPlayerPath { get; set; } = default;
@@ -31,17 +30,17 @@ namespace SilentTestimony.World
                         if (!UseTileCoordinates)
                                 return;
 
-                        GlobalPosition = RuntimeTilemapBuilderLayers.TileToWorldPosition(TileCoords, TileCellSize, TileOffset);
+                        GlobalPosition = GridUtility.TileToWorldPosition(TileCoords, TileOffset);
                 }
 
                 public string GetInteractPrompt()
                 {
                         if (_isOpened)
-                                return "通过";
+                                return TranslationServer.Translate("ui.pass");
 
 			return string.IsNullOrEmpty(RequiredKeyItemID)
-				? "打开"
-				: "使用钥匙";
+				? TranslationServer.Translate("ui.open")
+				: TranslationServer.Translate("ui.use_key");
 		}
 
 		public void Interact(Node2D interactor)

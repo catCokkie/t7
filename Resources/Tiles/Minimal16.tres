@@ -1,9 +1,16 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dxmmo6i5hjbmy"]
+[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://dxmmo6i5hjbmy"]
 
 [ext_resource type="Texture2D" uid="uid://drl1srhuynyua" path="res://icon.svg" id="1_tex"]
 
 [sub_resource type="TileSetAtlasSource" id="1_atlas"]
 texture = ExtResource("1_tex")
+texture_region_size = Vector2i(16, 16)
+0:0/physics_layer_0/shape_0/shape = SubResource("Rect16Col")
+0:0/physics_layer_0/shape_0/transform = Transform2D(1, 0, 0, 1, 8, 8)
+
+[sub_resource type="RectangleShape2D" id="Rect16Col"]
+size = Vector2(16, 16)
 
 [resource]
+tile_size = Vector2i(16, 16)
 sources/0 = SubResource("1_atlas")

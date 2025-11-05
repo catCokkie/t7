@@ -33,6 +33,8 @@ PauseMenuManager="*res://Scripts/UI/PauseMenuManager.cs"
 DebugOverlayManager="*res://Scripts/UI/DebugOverlayManager.cs"
 AudioManager="*res://Scripts/Systems/AudioManager.cs"
 PostProcessController="*res://Scripts/UI/PostProcessController.cs"
+DialogueManager="*res://Scripts/Dialogue/DialogueManager.cs"
+LocalizationManager="*res://Scripts/Localization/LocalizationManager.cs"
 
 [display]
 

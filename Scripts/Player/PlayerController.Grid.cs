@@ -1,4 +1,5 @@
 using Godot;
+using SilentTestimony.World;
 
 namespace SilentTestimony.Player
 {
@@ -6,7 +7,6 @@ namespace SilentTestimony.Player
     {
         [ExportGroup("Grid Movement")]
         [Export] private bool _useGridMovement = false;
-        [Export(PropertyHint.Range, "4,128,1")] private int _cellSize = 16;
         [Export(PropertyHint.Range, "1,30,0.5")] private float _tilesPerSecond = 6f;
         [Export] private NodePath _gridLayerPath;
 
@@ -67,7 +67,7 @@ namespace SilentTestimony.Player
             var layer = ResolveGridLayer();
             if (layer == null)
             {
-                return new Vector2I(Mathf.FloorToInt(world.X / _cellSize), Mathf.FloorToInt(world.Y / _cellSize));
+                return GridUtility.WorldToTile(world, GridUtility.CellSize);
             }
             return layer.LocalToMap(layer.ToLocal(world));
         }
@@ -77,7 +77,7 @@ namespace SilentTestimony.Player
             var layer = ResolveGridLayer();
             if (layer == null)
             {
-                return new Vector2(cell.X * _cellSize + _cellSize * 0.5f, cell.Y * _cellSize + _cellSize * 0.5f);
+                return GridUtility.TileToWorldCenter(cell, GridUtility.CellSize);
             }
             return layer.ToGlobal(layer.MapToLocal(cell));
         }

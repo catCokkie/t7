@@ -14,7 +14,6 @@ namespace SilentTestimony.World
                 [Export] public bool UseTileCoordinates { get; set; } = false;
                 [Export] public Vector2I TileCoords { get; set; } = Vector2I.Zero;
                 [Export] public Vector2 TileOffset { get; set; } = Vector2.Zero;
-                [Export(PropertyHint.Range, "4,256,1")] public float TileCellSize { get; set; } = 16f;
 
                 [Export] public InventoryItemData Item;
                 [Export] public bool DestroyOnPickup = true;
@@ -30,13 +29,28 @@ namespace SilentTestimony.World
                         if (!UseTileCoordinates)
                                 return;
 
-                        GlobalPosition = RuntimeTilemapBuilderLayers.TileToWorldPosition(TileCoords, TileCellSize, TileOffset);
+                        GlobalPosition = GridUtility.TileToWorldPosition(TileCoords, TileOffset);
                 }
 
 		public string GetInteractPrompt()
 		{
-			var name = Item != null && !string.IsNullOrEmpty(Item.Name) ? Item.Name : "物品";
-			return $"拾取：{name}";
+			string name = TranslationServer.Translate("ui.item");
+			if (Item != null)
+			{
+				if (!string.IsNullOrEmpty(Item.NameKey))
+				{
+					var t = TranslationServer.Translate(Item.NameKey);
+					if (!string.IsNullOrEmpty(t)) name = t;
+					else if (!string.IsNullOrEmpty(Item.Name)) name = Item.Name;
+				}
+				else if (!string.IsNullOrEmpty(Item.Name))
+				{
+					name = Item.Name;
+				}
+			}
+			var fmt = TranslationServer.Translate("ui.pickup");
+			if (string.IsNullOrEmpty(fmt)) fmt = "Pick up: {0}";
+			return string.Format(fmt, name);
 		}
 
 		public void Interact(Node2D interactor)

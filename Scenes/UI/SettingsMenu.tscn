@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="Center"]
-custom_minimum_size = Vector2(420, 300)
+custom_minimum_size = Vector2(420, 340)
 
 [node name="VBox" type="VBoxContainer" parent="Center/Panel"]
 layout_mode = 2
@@ -36,14 +36,14 @@ offset_right = -16.0
 offset_bottom = -16.0
 
 [node name="Title" type="Label" parent="Center/Panel/VBox"]
-text = "设置"
+text = "ui.settings.title"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 20
 
 [node name="Volume" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="Label" type="Label" parent="Center/Panel/VBox/Volume"]
-text = "主音量 (dB)"
+text = "ui.settings.master_db"
 
 [node name="Slider" type="HSlider" parent="Center/Panel/VBox/Volume"]
 min_value = -40.0
@@ -54,7 +54,7 @@ size_flags_horizontal = 3
 [node name="WindowMode" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="Label" type="Label" parent="Center/Panel/VBox/WindowMode"]
-text = "窗口模式"
+text = "ui.settings.window_mode"
 
 [node name="Option" type="OptionButton" parent="Center/Panel/VBox/WindowMode"]
 size_flags_horizontal = 3
@@ -62,14 +62,14 @@ size_flags_horizontal = 3
 [node name="Borderless" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="Label" type="Label" parent="Center/Panel/VBox/Borderless"]
-text = "无边框窗口"
+text = "ui.settings.borderless"
 
 [node name="Check" type="CheckBox" parent="Center/Panel/VBox/Borderless"]
 
 [node name="Music" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="Label" type="Label" parent="Center/Panel/VBox/Music"]
-text = "音乐音量 (dB)"
+text = "ui.settings.music_db"
 
 [node name="Slider" type="HSlider" parent="Center/Panel/VBox/Music"]
 min_value = -40.0
@@ -80,7 +80,7 @@ size_flags_horizontal = 3
 [node name="SFX" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="Label" type="Label" parent="Center/Panel/VBox/SFX"]
-text = "音效音量 (dB)"
+text = "ui.settings.sfx_db"
 
 [node name="Slider" type="HSlider" parent="Center/Panel/VBox/SFX"]
 min_value = -40.0
@@ -91,12 +91,21 @@ size_flags_horizontal = 3
 [node name="Resolution" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="Label" type="Label" parent="Center/Panel/VBox/Resolution"]
-text = "分辨率"
+text = "ui.settings.resolution"
 
 [node name="Option" type="OptionButton" parent="Center/Panel/VBox/Resolution"]
+size_flags_horizontal = 3
+
+[node name="Language" type="HBoxContainer" parent="Center/Panel/VBox"]
+
+[node name="Label" type="Label" parent="Center/Panel/VBox/Language"]
+text = "ui.settings.language"
+
+[node name="Option" type="OptionButton" parent="Center/Panel/VBox/Language"]
 size_flags_horizontal = 3
 
 [node name="Buttons" type="HBoxContainer" parent="Center/Panel/VBox"]
 
 [node name="CloseButton" type="Button" parent="Center/Panel/VBox/Buttons"]
-text = "关闭"
+text = "ui.close"
+

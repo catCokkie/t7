@@ -2,6 +2,7 @@
 using SilentTestimony.Core;
 using SilentTestimony.Player;
 using SilentTestimony.Systems;
+using SilentTestimony.Dialogue;
 using SilentTestimony.Data;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,17 @@ namespace SilentTestimony.Systems
             float hour = time?.CurrentTimeInHours ?? 6.0f;
             long unix = DateTimeOffset.Now.ToUnixTimeSeconds();
 
+            // 保存 Dialogue 旗标
+            var dlg = GetNodeOrNull<DialogueManager>("/root/DialogueManager");
+            var flagsDict = new Godot.Collections.Dictionary<string, Variant>();
+            if (dlg != null && dlg.State != null)
+            {
+                foreach (var kv in dlg.State.Flags)
+                {
+                    flagsDict[kv.Key] = kv.Value;
+                }
+            }
+
             var dict = new Godot.Collections.Dictionary<string, Variant>
             {
                 {"scene", scenePath},
@@ -99,6 +111,7 @@ namespace SilentTestimony.Systems
                 {"sanity", sanity},
                 {"items", itemIds},
                 {"evidence", evidenceIds},
+                {"dialogue_flags", flagsDict},
                 {"day", day},
                 {"hour", hour},
                 {"save_time_unix", unix}
@@ -233,6 +246,21 @@ namespace SilentTestimony.Systems
                     {
                         var res = LoadEvidenceById(id);
                         if (res != null) evMgr.AddEvidence(res);
+                    }
+                }
+            }
+
+            // 恢复 Dialogue 旗标
+            if (result.ContainsKey("dialogue_flags"))
+            {
+                var flags = result["dialogue_flags"].AsGodotDictionary();
+                var dlgMgr = GetNodeOrNull<DialogueManager>("/root/DialogueManager");
+                if (dlgMgr != null)
+                {
+                    dlgMgr.State.Flags.Clear();
+                    foreach (var key in flags.Keys)
+                    {
+                        dlgMgr.State.Flags[(string)key] = (bool)flags[key].AsBool();
                     }
                 }
             }

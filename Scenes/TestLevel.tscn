@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bms0nmcta77mg"]
+[gd_scene load_steps=13 format=3 uid="uid://bms0nmcta77mg"]
 
 [ext_resource type="PackedScene" uid="uid://3ddufvb0r7gn" path="res://Scenes/Actors/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/ItemPickup.tscn" id="2_item"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" path="res://Scenes/Props/SceneDoor.tscn" id="7_scene_door"]
 [ext_resource type="Script" uid="uid://br01yub2chwu3" path="res://Scripts/World/RuntimeTilemapBuilderLayers.cs" id="8_rt_builder"]
 [ext_resource type="TileSet" path="res://Resources/Tiles/Minimal16.tres" id="9_tileset"]
+[ext_resource type="Script" path="res://Scripts/Dialogue/DialogueManager.cs" id="10_dlg_mgr"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/DialogueUI.tscn" id="11_dlg_ui"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/DialogueTrigger.tscn" id="12_dlg_trigger"]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -52,3 +55,15 @@ TargetSpawnPointName = "Spawn_FromLevel1"
 [node name="RuntimeTilemapBuilder" type="Node2D" parent="TileWorld"]
 script = ExtResource("8_rt_builder")
 TileSet = ExtResource("9_tileset")
+
+[node name="Talk1" parent="." instance=ExtResource("12_dlg_trigger")]
+UseTileCoordinates = true
+TileCoords = Vector2i(30, 17)
+TileOffset = Vector2(8, 8)
+DialogueResourcePath = "res://Resources/Dialogue/graphs/AdvancedIntro.tres"
+
+[node name="TalkFlag" parent="." instance=ExtResource("12_dlg_trigger")]
+UseTileCoordinates = true
+TileCoords = Vector2i(34, 17)
+TileOffset = Vector2(8, 8)
+DialogueResourcePath = "res://Resources/Dialogue/graphs/FlagBranchDemo.tres"

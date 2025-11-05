@@ -13,7 +13,6 @@ namespace SilentTestimony.World
         [Export] public bool UseTileCoordinates { get; set; } = false;
         [Export] public Vector2I TileCoords { get; set; } = Vector2I.Zero;
         [Export] public Vector2 TileOffset { get; set; } = Vector2.Zero;
-        [Export(PropertyHint.Range, "4,256,1")] public float TileCellSize { get; set; } = 16f;
 
         [Export] public string TargetScenePath = string.Empty;
         [Export] public string TargetSpawnPointName = string.Empty;
@@ -31,27 +30,28 @@ namespace SilentTestimony.World
                 return;
             }
 
-            GlobalPosition = RuntimeTilemapBuilderLayers.TileToWorldPosition(TileCoords, TileCellSize, TileOffset);
+            GlobalPosition = GridUtility.TileToWorldPosition(TileCoords, TileOffset);
         }
 
         public string GetInteractPrompt()
         {
-            // 由 InteractionPrompt 统一加“按 E：”前缀
-            return string.IsNullOrEmpty(TargetScenePath) ? "未配置传送" : "进入";
+            if (string.IsNullOrEmpty(TargetScenePath))
+                return TranslationServer.Translate("ui.missing_target");
+            return TranslationServer.Translate("ui.enter");
         }
 
         public void Interact(Node2D interactor)
         {
             if (string.IsNullOrEmpty(TargetScenePath))
             {
-                GD.PushWarning("SceneDoor: 未配置 TargetScenePath");
+                GD.PushWarning("SceneDoor: Missing TargetScenePath");
                 return;
             }
 
             var loader = GetNodeOrNull<SceneLoader>("/root/SceneLoader");
             if (loader == null)
             {
-                GD.PushError("SceneDoor: 未找到 SceneLoader（需要设置为 Autoload）");
+                GD.PushError("SceneDoor: SceneLoader not found (expected Autoload)");
                 return;
             }
 
